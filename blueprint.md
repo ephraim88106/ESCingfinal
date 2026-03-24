@@ -27,5 +27,6 @@ A modern, framework-less web application for study cafe concierge services, feat
    - Committed all current changes.
    - Pushed to `main` branch.
 3. **Deployment:**
-   - Configured `firebase.json` and `.firebaserc`.
-   - (Pending) Deployment to Firebase Hosting (requires user authentication).
+   - Primary Hosting: **Cloudflare Pages** (`https://escadmin.pages.dev`)
+   - Backend/Database: Firebase Realtime Database (`esc-info-92948`)
+   - Status: Active and Automatically updated via GitHub push.
