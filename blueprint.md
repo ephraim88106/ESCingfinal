@@ -10,6 +10,9 @@ A modern, framework-less web application for study cafe concierge services, feat
   - Main dashboard for concierge services.
   - Inquiry/Complain forms for payment, study rooms, lockers, and general inquiries.
   - History tracking for user inquiries (stored in `sessionStorage` keys).
+  - **Telegram Real-time Notifications:** 
+    - Integrated Telegram Bot API to send instant alerts to administrators when a new inquiry is submitted.
+    - Notifications include branch name, category, seat number, and content.
   - **Auto-rotating Promotion Banners:** Redesigned with neutral class names (e.g., `promo-banner-container`) to prevent interference from ad-blockers and Cloudflare's Rocket Loader.
 - **Tech Stack:**
   - HTML5, CSS3 (Modern Baseline features like Variables, Gradients).

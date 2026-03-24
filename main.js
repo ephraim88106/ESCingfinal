@@ -18,6 +18,37 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const inquiriesRef = ref(db, 'inquiries');
 
+// ======================================================
+// ✈️ Telegram Notification Configuration
+// ======================================================
+const TELEGRAM_BOT_TOKEN = "8437130594:AAH6xOucJ6d2cbC_lnL7nc9LttOx9cq63xc";
+const TELEGRAM_CHAT_IDS = ["8478291658", "8789976868"];
+
+async function sendTelegramNotification(inquiry) {
+    const message = `<b>🔔 [에브라임] 새로운 문의 접수</b>\n\n` +
+                    `📍 <b>지점:</b> ${inquiry.branch}\n` +
+                    `👤 <b>카테고리:</b> ${inquiry.category}\n` +
+                    `💺 <b>좌석/구역:</b> ${inquiry.seat}\n` +
+                    `📝 <b>내용:</b> ${inquiry.content}\n` +
+                    `⏰ <b>시간:</b> ${inquiry.time}`;
+
+    for (const chatId of TELEGRAM_CHAT_IDS) {
+        try {
+            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+        } catch (e) {
+            console.error("Telegram 알림 전송 실패 (ID: " + chatId + "):", e);
+        }
+    }
+}
+
 let currentBranch = "";
 let activeSubScreen = "";
 let myInquiryKeys = JSON.parse(sessionStorage.getItem('myInquiryKeys') || '[]');
@@ -197,6 +228,10 @@ async function saveInquiry(newInquiry, btnId, successMsg) {
     setLoading(btnId, true);
     try {
         const newRef = await push(inquiriesRef, { ...newInquiry, timestamp: Date.now() });
+        
+        // 텔레그램 알림 전송 (비동기)
+        sendTelegramNotification(newInquiry);
+
         myInquiryKeys.push(newRef.key);
         sessionStorage.setItem('myInquiryKeys', JSON.stringify(myInquiryKeys));
         alert(successMsg);
