@@ -25,6 +25,29 @@
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); font-family: 'Noto Sans KR', sans-serif; font-weight: 300; color: var(--text); min-height: 100vh; }
 
+        /* 로그인 오버레이 */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .login-box {
+            background: var(--card); padding: 30px; border-radius: var(--radius);
+            box-shadow: var(--shadow); width: 100%; max-width: 320px; text-align: center;
+        }
+        .login-box h2 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 20px; }
+        .login-input {
+            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;
+            margin-bottom: 15px; font-size: 1rem; text-align: center; outline: none;
+        }
+        .login-btn {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            background: var(--primary); color: white; font-weight: 500; cursor: pointer;
+        }
+
+        .admin-content { display: none; } /* 초기에는 숨김 */
+
         .top-bar { background: var(--card); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .top-bar-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--primary); letter-spacing: 2px; display: flex; flex-direction: column; line-height: 1; }
         .top-bar-logo small { font-family: 'Noto Sans KR', sans-serif; font-size: 0.65rem; color: var(--text-light); font-weight: 300; letter-spacing: 1px; margin-top: 3px; }
@@ -97,13 +120,24 @@
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="top-bar-logo">EPHRAIM<small>ADMIN DASHBOARD</small></div>
-        <div class="conn-badge" id="conn-badge">
-            <div class="conn-dot"></div>
-            <span id="conn-text">연결 중...</span>
+    <!-- [신규] 비밀번호 입력 화면 -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>ADMIN LOGIN</h2>
+            <input type="password" id="admin-password" class="login-input" placeholder="비밀번호 입력">
+            <button class="login-btn" onclick="checkPassword()">로그인</button>
         </div>
     </div>
+
+    <!-- 기존 관리자 콘텐츠를 감싸는 영역 -->
+    <div class="admin-content" id="admin-content">
+        <div class="top-bar">
+            <div class="top-bar-logo">EPHRAIM<small>ADMIN DASHBOARD</small></div>
+            <div class="conn-badge" id="conn-badge">
+                <div class="conn-dot"></div>
+                <span id="conn-text">연결 중...</span>
+            </div>
+        </div>
 
     <div class="stats-grid">
         <div class="stat-card">
@@ -152,9 +186,36 @@
         <button class="refresh-btn" onclick="renderDashboard()"><i class="fas fa-sync-alt"></i> 새로고침</button>
     </div>
 
+    </div> <!-- admin-content 끝 -->
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getDatabase, ref, onValue, update, remove, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // 비밀번호 체크 함수 (전역 할당)
+        window.checkPassword = function() {
+            const pw = document.getElementById('admin-password').value;
+            if (pw === '12123ska') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                sessionStorage.setItem('admin_auth', 'true');
+            } else {
+                alert('비밀번호가 틀렸습니다.');
+            }
+        };
+
+        // 페이지 로드 시 인증 상태 확인
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('admin_auth') === 'true') {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+            }
+            
+            // 엔터키 지원
+            document.getElementById('admin-password').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') window.checkPassword();
+            });
+        });
 
         const firebaseConfig = {
             apiKey: "AIzaSyCt-HiQkDoeAxnJN7VwsmEpoxwWQmCC69E",
