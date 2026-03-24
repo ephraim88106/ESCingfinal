@@ -103,10 +103,14 @@ window.openSubScreen = function(screenId) {
     if(screenId === 'screen-payment') { window.renderPaymentInfo(); }
     if(screenId === 'screen-room') { window.renderRoomInfo(); }
     if(screenId === 'screen-faq') { window.renderWifiInfo(); }
+    
+    // 정보성 페이지(About, Privacy, Terms)의 경우 별도 데이터 렌더링 필요 없음
 
-    // 하위 메뉴 배너 삽입 (최초 1회)
+    // 하위 메뉴 배너 삽입 (최초 1회, 정보성 페이지 제외)
+    const informationalScreens = ['screen-about', 'screen-privacy', 'screen-terms', 'screen-mypage', 'screen-guide'];
     const screen = document.getElementById(screenId);
-    if (!screen.querySelector('.promo-banner-container')) {
+    
+    if (!informationalScreens.includes(screenId) && !screen.querySelector('.promo-banner-container')) {
         const contentDiv = screen.querySelector('.content');
         if (contentDiv) {
             const bannerHtml = `
