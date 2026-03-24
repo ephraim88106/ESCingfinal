@@ -1,14 +1,571 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPHRAIM STUDY CAFE - Premium Concierge</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #FDFBF9;
+            --card-color: #FFFFFF;
+            --primary-color: #4E342E;
+            --accent-color: #D7CCC8;
+            --text-dark: #212121;
+            --text-light: #757575;
+            --shadow-light: 0 4px 6px rgba(0,0,0,0.03);
+            --shadow-hover: 0 10px 15px rgba(0,0,0,0.08);
+            --premium-easing: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-speed: 0.35s;
+            --status-pending: #EF5350;
+            --status-completed: #66BB6A;
+        }
+
+        body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Noto Sans KR', sans-serif; font-weight: 300; color: var(--text-dark); }
+        .app-container { width: 375px; height: 667px; background-color: var(--bg-color); border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); overflow: hidden; position: relative; border: 1px solid rgba(0,0,0,0.05); }
+
+        .screen { width: 100%; height: 100%; display: flex; flex-direction: column; background-color: var(--bg-color); position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; transform: translateX(20px); transition: all var(--transition-speed) var(--premium-easing); }
+        .screen.active { opacity: 1; visibility: visible; transform: translateX(0); z-index: 10; }
+        #screen-branch, #screen-main { transform: translateY(15px); }
+        #screen-branch.active, #screen-main.active { transform: translateY(0); }
+
+        .header { background-color: var(--card-color); padding: 25px 25px 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.03); flex-shrink: 0; z-index: 5;}
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        .back-btn { color: var(--text-light); font-size: 1.2rem; cursor: pointer; transition: color 0.2s; padding: 5px; }
+        .back-btn:hover { color: var(--primary-color); }
+        .brand-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary-color); font-weight: 600; display: flex; align-items: baseline; gap: 8px; }
+        .sub-title { font-size: 1.1rem; font-weight: 500; color: var(--text-dark); }
+        
+        .content { padding: 20px 25px 30px 25px; overflow-y: auto; flex-grow: 1; }
+        .content::-webkit-scrollbar { width: 0px; }
+        
+        .ad-banner-container { width: 100%; height: 70px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; position: relative; box-shadow: var(--shadow-light); cursor: pointer; }
+        .ad-slider { display: flex; width: 200%; height: 100%; animation: slideAd 8s infinite var(--premium-easing); }
+        .ad-slide { width: 50%; height: 100%; display: flex; align-items: center; padding: 0 20px; box-sizing: border-box; color: white; }
+        .ad-badge { background: rgba(255,255,255,0.25); padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 700; margin-right: 12px; letter-spacing: 0.5px; }
+        .ad-text { font-size: 0.85rem; font-weight: 500; letter-spacing: -0.3px; line-height: 1.4; }
+        
+        @keyframes slideAd { 0%, 45% { transform: translateX(0); } 50%, 95% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+
+        /* ad slide 배경 클래스 (CSP inline style 방지) */
+        .ad-bg-1 { background: linear-gradient(135deg, #8D6E63, #5D4037); }
+        .ad-bg-2 { background: linear-gradient(135deg, #A1887F, #795548); }
+        .front-bg-1 { background: linear-gradient(135deg, #5D4037, #4E342E); }
+        .front-bg-2 { background: linear-gradient(135deg, #4E342E, #6D4C41); }
+        .front-bg-3 { background: linear-gradient(135deg, #6D4C41, #8D6E63); }
+        .front-bg-4 { background: linear-gradient(135deg, #8D6E63, #5D4037); }
+        .front-bg-5 { background: linear-gradient(135deg, #4E342E, #795548); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 8px; color: var(--primary-color); }
+        .premium-input, .premium-select, .premium-textarea { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #E0E0E0; background: #F8F9FA; box-sizing: border-box; font-family: inherit; font-size: 0.95rem; color: var(--text-dark); transition: all 0.2s; }
+        .premium-input:focus, .premium-select:focus, .premium-textarea:focus { outline: none; border-color: var(--accent-color); background: #FFFFFF; box-shadow: 0 0 0 3px rgba(215, 204, 200, 0.2); }
+        .premium-textarea { height: 100px; resize: none; }
+        
+        .bottom-btn-wrap { padding: 15px 25px; background: var(--bg-color); border-top: 1px solid rgba(0,0,0,0.03); }
+        .premium-btn { width: 100%; padding: 16px; border-radius: 15px; background: var(--primary-color); color: white; font-weight: 500; border: none; font-size: 1.05rem; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-light); }
+        .premium-btn:active { transform: scale(0.98); background: #3E2723; }
+        .premium-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .info-card { background: var(--card-color); border-radius: 16px; padding: 18px 20px; margin-bottom: 15px; box-shadow: var(--shadow-light); border: 1px solid rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: space-between;}
+        .info-card i { font-size: 1.5rem; color: var(--accent-color); margin-right: 15px; }
+        .info-text-wrap { flex-grow: 1; }
+        .info-title { font-weight: 600; font-size: 1rem; margin-bottom: 4px; color: var(--text-dark); }
+        .info-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+
+        .price-card { background: var(--card-color); border-radius: 16px; padding: 22px 20px; margin-bottom: 18px; box-shadow: var(--shadow-light); border: 1px solid rgba(0,0,0,0.02); }
+        .price-header { display: flex; align-items: center; margin-bottom: 6px; font-weight: 600; font-size: 1.05rem; color: var(--primary-color); }
+        .price-header i { font-size: 1.2rem; color: var(--accent-color); margin-right: 10px; width: 20px; text-align: center; }
+        .price-note { font-size: 0.75rem; color: #EF5350; margin-bottom: 14px; margin-left: 30px; font-weight: 400; }
+        .price-list { list-style: none; padding: 0; margin: 0; margin-left: 30px; }
+        .price-list li { display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--text-dark); margin-bottom: 8px; border-bottom: 1px dashed #f0f0f0; padding-bottom: 6px; align-items: flex-end;}
+        .price-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .price-time { font-weight: 400; }
+        .price-amt { font-weight: 600; color: var(--primary-color); text-align: right; }
+
+        .history-card { background: var(--card-color); border-radius: 15px; padding: 18px; margin-bottom: 15px; box-shadow: var(--shadow-light); border: 1px solid rgba(0,0,0,0.03); display: flex; flex-direction: column; gap: 10px; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #EEEEEE; padding-bottom: 10px; }
+        .history-branch { font-size: 0.85rem; color: var(--primary-color); font-weight: 600; }
+        .history-time { font-size: 0.75rem; color: var(--text-light); }
+        .history-body { display: flex; justify-content: space-between; align-items: flex-start; padding-top: 5px; }
+        .history-content { font-size: 0.95rem; color: var(--text-dark); line-height: 1.4; flex-grow: 1; padding-right: 15px; }
+        .history-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; white-space: nowrap; }
+        .badge-pending { background-color: #FFEBEE; color: var(--status-pending); }
+        .badge-completed { background-color: #E8F5E9; color: var(--status-completed); }
+        .empty-history { text-align: center; color: var(--text-light); padding: 40px 0; font-size: 0.9rem; }
+
+        .intro-header { text-align: center; margin-top: 60px; margin-bottom: 35px; }
+        
+        /* 맨 앞 페이지 광고 배너 */
+        .front-ad-container { width: 100%; height: 70px; position: relative; cursor: pointer; margin-top: 20px; padding: 0 30px; box-sizing: border-box; }
+        .front-ad-box { width: 100%; height: 100%; border-radius: 16px; overflow: hidden; position: relative; box-shadow: var(--shadow-light); }
+        .front-ad-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; padding: 0 20px; box-sizing: border-box; color: white; opacity: 0; transition: opacity 0.8s ease; }
+        .front-ad-slide.active { opacity: 1; }
+        .intro-logo { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--primary-color); letter-spacing: 2px; margin-bottom: 10px; }
+        .intro-subtitle { font-size: 0.9rem; color: var(--text-light); letter-spacing: 1px; }
+        .branch-list { padding: 0 30px; display: flex; flex-direction: column; gap: 15px; }
+        .branch-btn { background-color: var(--card-color); border: 1px solid rgba(0,0,0,0.04); border-radius: 15px; padding: 18px 20px; font-size: 1.05rem; font-weight: 500; cursor: pointer; box-shadow: var(--shadow-light); display: flex; justify-content: space-between; align-items: center; transition: all 0.3s var(--premium-easing); }
+        .branch-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .selected-branch-badge { font-family: 'Noto Sans KR', sans-serif; font-size: 0.7rem; background-color: var(--accent-color); color: var(--primary-color); padding: 2px 6px; border-radius: 8px; }
+        
+        .greeting-section { margin-bottom: 25px; }
+        .greeting-title { font-size: 1.6rem; font-weight: 500; margin: 0 0 5px 0; line-height: 1.3; }
+        .greeting-subtitle { font-size: 0.9rem; color: var(--text-light); margin: 0; }
+
+        .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .menu-btn { background-color: var(--card-color); border-radius: 18px; padding: 22px 10px; text-align: center; cursor: pointer; box-shadow: var(--shadow-light); border: 1px solid rgba(0,0,0,0.02); transition: all 0.3s var(--premium-easing); }
+        .menu-btn:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+        .menu-icon { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 12px; opacity: 0.85; }
+        .menu-text { font-size: 0.95rem; font-weight: 500; display: block; }
+        .menu-subtext { font-size: 0.75rem; color: var(--text-light); margin-top: 4px; display: block; }
+
+        .menu-btn { opacity: 0; transform: translateY(10px); }
+        .screen.active .menu-btn { animation: fadeInGrid 0.4s var(--premium-easing) forwards; }
+        @keyframes fadeInGrid { to { opacity: 1; transform: translateY(0); } }
+        
+        .menu-btn:nth-child(1), .menu-btn:nth-child(2) { animation-delay: 0.1s; }
+        .menu-btn:nth-child(3), .menu-btn:nth-child(4) { animation-delay: 0.2s; }
+        .menu-btn:nth-child(5), .menu-btn:nth-child(6) { animation-delay: 0.3s; }
+
+        /* 로딩 오버레이 */
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(253,251,249,0.85); display: flex; align-items: center; justify-content: center; z-index: 999; backdrop-filter: blur(4px); }
+        .loading-spinner { width: 36px; height: 36px; border: 3px solid var(--accent-color); border-top-color: var(--primary-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9118774019383180"
+     crossorigin="anonymous"></script>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+
+    <div class="app-container">
+        <div id="screen-branch" class="screen active">
+            <div class="intro-header">
+                <div class="intro-logo">EPHRAIM</div>
+                <div class="intro-subtitle">PREMIUM STUDY CAFE</div>
+            </div>
+            <div class="branch-list">
+                <div class="branch-btn" onclick="goToMain('계양직영점')">계양직영점 <i class="fas fa-chevron-right"></i></div>
+                <div class="branch-btn" onclick="goToMain('박촌역점')">박촌역점 <i class="fas fa-chevron-right"></i></div>
+                <div class="branch-btn" onclick="goToMain('부천상동점')">부천상동점 <i class="fas fa-chevron-right"></i></div>
+                <div class="branch-btn" onclick="goToMain('부천신중동점')">부천신중동점 <i class="fas fa-chevron-right"></i></div>
+            </div>
+
+            <!-- 광고 배너 (애드센스 적용 전 임시 문구) -->
+            <div class="front-ad-container">
+                <div class="front-ad-box">
+                    <div class="front-ad-slide front-bg-1 active">
+                        <span class="ad-badge">💡 오늘의 한마디</span>
+                        <span class="ad-text">작은 습관이 큰 차이를 만든다.<br>오늘도 한 걸음씩.</span>
+                    </div>
+                    <div class="front-ad-slide front-bg-2">
+                        <span class="ad-badge">📚 공부 팁</span>
+                        <span class="ad-text">25분 집중, 5분 휴식.<br>뽀모도로 기법으로 효율 UP!</span>
+                    </div>
+                    <div class="front-ad-slide front-bg-3">
+                        <span class="ad-badge">🌱 성장</span>
+                        <span class="ad-text">매일 1%씩 나아지면<br>1년 후 37배 성장합니다.</span>
+                    </div>
+                    <div class="front-ad-slide front-bg-4">
+                        <span class="ad-badge">⏰ 습관</span>
+                        <span class="ad-text">같은 시간, 같은 자리.<br>반복이 실력이 됩니다.</span>
+                    </div>
+                    <div class="front-ad-slide front-bg-5">
+                        <span class="ad-badge">✨ 동기부여</span>
+                        <span class="ad-text">지금 이 순간의 집중이<br>미래의 나를 만듭니다.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-main" class="screen">
+            <div class="header">
+                <div class="header-left">
+                    <i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i>
+                    <div class="brand-logo">EPHRAIM <span id="display-branch" class="selected-branch-badge"></span></div>
+                </div>
+                <i class="far fa-user-circle" style="color:#757575; font-size:1.3rem; cursor:pointer;" onclick="openMyPage()"></i>
+            </div>
+            <div id="main-content" class="content">
+                <div class="greeting-section"><p class="greeting-title">집중을 위한<br>모든 준비</p><p class="greeting-subtitle">무엇을 도와드릴까요?</p></div>
+                
+                <div class="ad-banner-container" onclick="alert('가장 쾌적한 스터디카페 에브라임입니다.')">
+                    <div class="ad-slider">
+                        <div class="ad-slide ad-bg-1">
+                            <span class="ad-badge">안내</span>
+                            <span class="ad-text">☕ 최고급 스페셜티 원두 입고!<br>라운지에서 무료로 즐기세요.</span>
+                        </div>
+                        <div class="ad-slide ad-bg-2">
+                            <span class="ad-badge" style="background:rgba(255,255,255,0.25);">응원</span>
+                            <span class="ad-text">✨ 당신의 찬란한 꿈을 응원합니다.<br>오늘도 에브라임과 함께!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-container">
+                    <div class="menu-btn" onclick="openSubScreen('screen-payment')"><i class="far fa-credit-card menu-icon"></i><span class="menu-text">이용권 요금 안내</span><span class="menu-subtext">가격 및 상세 안내</span></div>
+                    <div class="menu-btn" onclick="openSubScreen('screen-room')"><i class="far fa-calendar-check menu-icon"></i><span class="menu-text">스터디룸 요금/예약</span><span class="menu-subtext">이용 안내 및 신청</span></div>
+                    
+                    <div class="menu-btn" onclick="openSubScreen('screen-locker')"><i class="fas fa-box menu-icon"></i><span class="menu-text">사물함 관리</span><span class="menu-subtext">신청 및 연장</span></div>
+                    <div class="menu-btn" onclick="openSubScreen('screen-complain')"><i class="fas fa-headset menu-icon" style="color:#EF5350;"></i><span class="menu-text">현장 불편 접수</span><span class="menu-subtext">소음·온도·청소</span></div>
+                    
+                    <div class="menu-btn" onclick="openSubScreen('screen-faq')"><i class="fas fa-wifi menu-icon"></i><span class="menu-text">FAQ / Wi-Fi</span><span class="menu-subtext">비밀번호 확인</span></div>
+                    <div class="menu-btn" onclick="openSubScreen('screen-inquiry')"><i class="far fa-comment-dots menu-icon"></i><span class="menu-text">1:1 문의</span><span class="menu-subtext">기타 건의사항</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-mypage" class="screen">
+            <div class="header">
+                <i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">마이페이지</span><div style="width:20px;"></div>
+            </div>
+            <div class="content">
+                <div class="greeting-section" style="margin-bottom: 20px;">
+                    <p class="greeting-title" style="font-size: 1.3rem;">나의 이용 내역</p>
+                    <p class="greeting-subtitle">최근 문의 및 요청하신 접수 내역입니다.</p>
+                </div>
+                <div id="mypage-list"></div>
+            </div>
+        </div>
+
+        <div id="screen-payment" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">이용권 요금 안내</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <p style="margin-top:0; color:var(--text-light); font-size:0.9rem;">선택하신 <b id="display-price-branch" style="color:var(--primary-color);"></b>의 요금표입니다.<br>결제는 현장 무인결제기를 이용해 주세요.</p>
+                <div id="payment-content-area"></div>
+                <div class="form-group" style="margin-top: 30px;">
+                    <label class="form-label" style="color:var(--text-dark);">💬 요금 및 단체 결제 문의</label>
+                    <textarea id="payment-detail" class="premium-textarea" placeholder="장기 결제 할인, 단체 이용 등 궁금하신 점을 남겨주시면 관리자가 확인 후 안내해 드립니다." style="height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-payment" onclick="submitForm('screen-payment', '요금문의', null, 'payment-detail', null)">요금 관련 문의 남기기</button></div>
+        </div>
+
+        <div id="screen-room" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">스터디룸 요금/예약 안내</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <p style="margin-top:0; color:var(--text-light); font-size:0.9rem;">선택하신 <b id="display-room-branch" style="color:var(--primary-color);"></b>의 스터디룸 정보입니다.</p>
+                <div id="room-content-area" style="margin-bottom: 20px;"></div>
+                <div class="info-card" style="background:#F8F9FA;"><i class="fas fa-info-circle" style="color:var(--text-light);"></i><div class="info-text-wrap"><div class="info-title" style="color:var(--primary-color);">간편 예약 방법</div><div class="info-desc">아래 문의 폼에 <b>[이용 날짜 / 시간 / 인원수]</b>를 남겨주시면 관리자가 실시간으로 확인 후 확정 안내 문자를 보내드립니다.</div></div></div>
+                <div class="form-group" style="margin-top: 30px;">
+                    <label class="form-label" style="color:var(--text-dark);">💬 사전 예약 및 정기 이용 문의</label>
+                    <textarea id="room-detail" class="premium-textarea" placeholder="희망하시는 [날짜, 시간, 인원수] 및 장기 정기 이용 문의를 자유롭게 남겨주세요." style="height: 100px;"></textarea>
+                </div>
+            </div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-room" onclick="submitForm('screen-room', '예약문의', null, 'room-detail', null)">스터디룸 예약 문의하기</button></div>
+        </div>
+
+        <div id="screen-locker" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">사물함 관리</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <div class="form-group">
+                    <label class="form-label">신청 및 요청 구분</label>
+                    <select id="locker-type" class="premium-select">
+                        <option value="사물함 신규 신청 문의">사물함 신규 신청</option>
+                        <option value="사물함 기간 연장 요청">기존 사물함 기간 연장</option>
+                        <option value="사물함 비밀번호 분실/오류">비밀번호 분실/초기화 요청</option>
+                        <option value="사물함 고장 및 수리 요청">사물함 고장 신고</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">사물함 번호 (기존 이용자만)</label><input type="text" id="locker-num" class="premium-input" placeholder="신규 신청인 경우 비워두셔도 됩니다."></div>
+            </div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-locker" onclick="submitForm('screen-locker', '사물함', 'locker-type', null, 'locker-num')">관리자에게 전송하기</button></div>
+        </div>
+
+        <div id="screen-complain" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">현장 불편 접수</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <div class="info-card" style="background:#FFF3E0; border-color:#FFE0B2; padding:15px; margin-bottom:20px;">
+                    <i class="fas fa-bell" style="color:#FF9800; font-size:1.2rem;"></i>
+                    <div class="info-text-wrap"><div class="info-desc" style="color:#E65100;">접수 즉시 관리자에게 긴급 알림이 전송되며,<br>익명성은 철저히 보장됩니다.</div></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">어떤 불편함이 있으신가요?</label>
+                    <select id="complain-type" class="premium-select">
+                        <option value="[소음/매너] 주변 대화 및 소음">🗣️ 주변 대화 및 소음 통제 요청</option>
+                        <option value="[소음/매너] 타이핑/마우스 소음">💻 노트북 타이핑/마우스 소음</option>
+                        <option value="[온도 조절] 너무 덥습니다">🔥 에어컨 온도 하향 요청 (더움)</option>
+                        <option value="[온도 조절] 너무 춥습니다">❄️ 에어컨 온도 상향 요청 (추움)</option>
+                        <option value="[클리닝] 좌석 주변 청소 요청">🧽 좌석 주변 및 바닥 청소 요청</option>
+                        <option value="[클리닝] 화장실/라운지 비품 보충">🧻 화장실/라운지 비품 보충 요망</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">현재 계신 좌석 번호 또는 구역</label><input type="text" id="complain-seat" class="premium-input" placeholder="예: 15번 좌석, 라운지 등"></div>
+                <div class="form-group"><label class="form-label">상세 내용 (선택)</label><textarea id="complain-detail" class="premium-textarea" placeholder="빠른 조치를 위해 상황을 간단히 적어주세요."></textarea></div>
+            </div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-complain" style="background-color:#EF5350;" onclick="submitComplain()">관리자에게 즉시 알림</button></div>
+        </div>
+
+        <div id="screen-faq" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">FAQ / Wi-Fi</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <label class="form-label">초고속 Wi-Fi 정보</label>
+                <div class="info-card">
+                    <i class="fas fa-wifi"></i>
+                    <div class="info-text-wrap">
+                        <div class="info-title">ephraim01 ~ 04</div>
+                        <div class="info-desc">PW: <b id="display-wifi-pw" style="color:var(--primary-color);"></b></div>
+                    </div>
+                </div>
+                <label class="form-label" style="margin-top:20px;">주요 안내사항</label>
+                <div class="info-card">
+                    <div class="info-text-wrap">
+                        <div class="info-title">☕ 라운지 / 스낵바 이용</div>
+                        <div class="info-desc">프리미엄 원두커피와 음료가 무료로 제공됩니다.<br>(쾌적한 환경을 위해 냄새나는 음식물 반입은 제한됩니다)</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="info-text-wrap">
+                        <div class="info-title">🖨️ 복합기(프린터) 이용</div>
+                        <div class="info-desc">이용권 구매 후에 이용 시,<br>인쇄 및 복사는 <b>무료</b>로 자유롭게 이용 가능합니다.<br>(단, 환경 보호를 위해 <b>A4 용지는 개인 지참</b> 필수)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-inquiry" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">1:1 상세 문의</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <div class="form-group">
+                    <label class="form-label">문의 카테고리</label>
+                    <select id="inquiry-cat" class="premium-select">
+                        <option value="결제/환불 관련">결제 및 환불 관련</option>
+                        <option value="시설 고장 신고">시설 및 장비 고장 신고</option>
+                        <option value="기타 건의사항">기타 건의사항</option>
+                    </select>
+                </div>
+                <div class="form-group"><label class="form-label">상세 내용</label><textarea id="inquiry-detail" class="premium-textarea" placeholder="건의 및 문의하실 내용을 자세히 적어주세요." style="height: 150px;"></textarea></div>
+            </div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-inquiry" onclick="submitForm('screen-inquiry', '기타', 'inquiry-cat', 'inquiry-detail')">문의글 남기기</button></div>
+        </div>
+
+    </div>
+
+    <!-- ✅ Firebase SDK (CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getDatabase, ref, push, onValue, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // ======================================================
+        // 🔥 여기에 Firebase 설정을 붙여넣으세요 (아래 가이드 참고)
+        // ======================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCt-HiQkDoeAxnJN7VwsmEpoxwWQmCC69E",
+            authDomain: "esc-info-86e12.firebaseapp.com",
+            databaseURL: "https://esc-info-86e12-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "esc-info-86e12",
+            storageBucket: "esc-info-86e12.firebasestorage.app",
+            messagingSenderId: "411200026634",
+            appId: "1:411200026634:web:afd8074af0d02ee93087f3"
+        };
+        // ======================================================
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const inquiriesRef = ref(db, 'inquiries');
+
+        let currentBranch = "";
+        let activeSubScreen = "";
+        let myInquiryKeys = JSON.parse(sessionStorage.getItem('myInquiryKeys') || '[]');
+        let allInquiries = {};
+
+        // Firebase에서 실시간 데이터 수신
+        onValue(query(inquiriesRef, orderByChild('timestamp')), (snapshot) => {
+            allInquiries = {};
+            snapshot.forEach((child) => {
+                allInquiries[child.key] = child.val();
+            });
+        });
+
+        // ---- 가격 데이터 ----
+        const commonPricingArray = [
+            { title: "일일 이용권", note: "*환불, 시간 정지 불가", icon: "fas fa-hourglass-half", items: [ {time: "3시간", price: "6,000원"}, {time: "4시간", price: "7,000원"}, {time: "6시간", price: "9,000원"}, {time: "8시간", price: "10,000원"}, {time: "12시간", price: "13,000원"} ] },
+            { title: "시간 이용권", note: "*퇴장시 반드시 퇴실 체크", icon: "fas fa-stopwatch", items: [ {time: "30시간", price: "50,000원"}, {time: "50시간", price: "65,000원"}, {time: "100시간", price: "120,000원"}, {time: "200시간", price: "220,000원"} ] },
+            { title: "기간권", note: "*퇴장시 반드시 퇴실 체크", icon: "far fa-calendar-alt", items: [ {time: "2주", price: "90,000원"}, {time: "4주", price: "140,000원"}, {time: "8주", price: "270,000원"}, {time: "12주", price: "400,000원"}, {time: "16주", price: "530,000원"} ] },
+            { title: "고정석 이용권", note: "", icon: "fas fa-chair", items: [ {time: "2주", price: "130,000원"}, {time: "4주", price: "190,000원"}, {time: "8주", price: "370,000원"}, {time: "12주", price: "540,000원"}, {time: "16주", price: "700,000원"} ] },
+            { title: "사물함 요금", note: "*무인결제기에서 결제 후 사용 가능", icon: "fas fa-box", items: [ {time: "4주", price: "10,000원"}, {time: "8주", price: "19,000원"}, {time: "12주", price: "28,000원"} ] }
+        ];
+        const sinjungdongPricingArray = [
+            { title: "일일 이용권", note: "*환불, 시간 정지 불가", icon: "fas fa-hourglass-half", items: [ {time: "3시간", price: "6,000원"}, {time: "4시간", price: "7,000원"}, {time: "6시간", price: "9,000원"}, {time: "8시간", price: "10,000원"}, {time: "12시간", price: "13,000원"} ] },
+            { title: "시간 이용권 (할인 특가)", note: "*퇴장시 반드시 퇴실 체크", icon: "fas fa-stopwatch", items: [ {time: "100시간 <span style='font-size:0.75rem; color:#9E9E9E; display:block; margin-top:2px;'>유효기간 100일</span>", price: "<span style='text-decoration:line-through; font-size:0.8rem; color:#BDBDBD; margin-right:6px;'>12만</span>109,000원"}, {time: "150시간 <span style='font-size:0.75rem; color:#9E9E9E; display:block; margin-top:2px;'>유효기간 110일</span>", price: "<span style='text-decoration:line-through; font-size:0.8rem; color:#BDBDBD; margin-right:6px;'>17.5만</span>150,000원"}, {time: "200시간 <span style='font-size:0.75rem; color:#9E9E9E; display:block; margin-top:2px;'>유효기간 120일</span>", price: "<span style='text-decoration:line-through; font-size:0.8rem; color:#BDBDBD; margin-right:6px;'>22만</span>180,000원"}, {time: "300시간", price: "310,000원"} ] },
+            { title: "기간권", note: "*퇴장시 반드시 퇴실 체크", icon: "far fa-calendar-alt", items: [ {time: "4주", price: "120,000원"}, {time: "8주", price: "230,000원"}, {time: "12주", price: "335,000원"} ] },
+            { title: "고정석 이용권", note: "", icon: "fas fa-chair", items: [ {time: "2주", price: "130,000원"}, {time: "4주", price: "190,000원"}, {time: "8주", price: "370,000원"}, {time: "12주", price: "540,000원"}, {time: "16주", price: "700,000원"} ] },
+            { title: "사물함 요금", note: "*무인결제기에서 결제 후 사용 가능", icon: "fas fa-box", items: [ {time: "4주", price: "10,000원"}, {time: "8주", price: "19,000원"}, {time: "12주", price: "28,000원"} ] }
+        ];
+        const branchPricingData = { '계양직영점': commonPricingArray, '박촌역점': commonPricingArray, '부천상동점': commonPricingArray, '부천신중동점': sinjungdongPricingArray, 'default': [ { title: "안내", note: "", icon: "fas fa-info-circle", items: [ {time: "요금표 준비 중", price: "-"} ] } ] };
+        const branchRoomData = { '계양직영점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" }, { title: "스터디룸2 (6인)", desc: "1시간 10,000원", icon: "fas fa-users-cog" } ], '박촌역점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천상동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천신중동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], 'default': [ { title: "안내", desc: "스터디룸 정보 준비 중", icon: "fas fa-info-circle" } ] };
+        const branchWifiData = { '계양직영점': 'hello1234', '박촌역점': 'escbc0909', '부천상동점': 'escsd0909', '부천신중동점': 'escjd0909', 'default': '안내 데스크 문의' };
+
+        // 앞 페이지 광고 배너 자동 페이드 전환
+        (function() {
+            const slides = document.querySelectorAll('.front-ad-slide');
+            let current = 0;
+            setInterval(() => {
+                slides[current].classList.remove('active');
+                current = (current + 1) % slides.length;
+                slides[current].classList.add('active');
+            }, 4000);
+        })();
+
+        if (window.location.hash) { history.replaceState(null, '', window.location.pathname); }
+
+        window.goToMain = function(branchName) {
+            currentBranch = branchName;
+            document.getElementById('display-branch').innerText = branchName;
+            document.getElementById('screen-branch').classList.remove('active');
+            setTimeout(() => { document.getElementById('screen-main').classList.add('active'); }, 100);
+            history.pushState({ page: 'main' }, '', '#main');
+        };
+
+        window.renderPaymentInfo = function() {
+            document.getElementById('display-price-branch').innerText = currentBranch;
+            const container = document.getElementById('payment-content-area');
+            container.innerHTML = '';
+            const pricingData = branchPricingData[currentBranch] || branchPricingData['default'];
+            pricingData.forEach(section => {
+                let listHtml = '';
+                section.items.forEach(item => { listHtml += `<li><span class="price-time">${item.time}</span><span class="price-amt">${item.price}</span></li>`; });
+                container.innerHTML += `<div class="price-card"><div class="price-header"><i class="${section.icon}"></i> ${section.title}</div>${section.note ? `<div class="price-note">${section.note}</div>` : ''}<ul class="price-list">${listHtml}</ul></div>`;
+            });
+        };
+
+        window.renderRoomInfo = function() {
+            document.getElementById('display-room-branch').innerText = currentBranch;
+            const container = document.getElementById('room-content-area');
+            container.innerHTML = '';
+            const roomData = branchRoomData[currentBranch] || branchRoomData['default'];
+            roomData.forEach(room => { container.innerHTML += `<div class="info-card"><i class="${room.icon}" style="color:var(--primary-color);"></i><div class="info-text-wrap"><div class="info-title">${room.title}</div><div class="info-desc">${room.desc}</div></div></div>`; });
+        };
+
+        window.renderWifiInfo = function() {
+            document.getElementById('display-wifi-pw').innerText = branchWifiData[currentBranch] || branchWifiData['default'];
+        };
+
+        window.openSubScreen = function(screenId) {
+            if(screenId === 'screen-payment') { window.renderPaymentInfo(); }
+            if(screenId === 'screen-room') { window.renderRoomInfo(); }
+            if(screenId === 'screen-faq') { window.renderWifiInfo(); }
+
+            // 하위 메뉴 배너 삽입 (최초 1회)
+            const screen = document.getElementById(screenId);
+            if (!screen.querySelector('.ad-banner-container')) {
+                const contentDiv = screen.querySelector('.content');
+                if (contentDiv) {
+                    const bannerHtml = '<div class="ad-banner-container" style="cursor:default;"><div class="ad-slider"><div class="ad-slide ad-bg-1"><span class="ad-badge">안내</span><span class="ad-text">☕ 최고급 스페셜티 원두 입고!<br>라운지에서 무료로 즐기세요.</span></div><div class="ad-slide ad-bg-2"><span class="ad-badge">응원</span><span class="ad-text">✨ 당신의 찬란한 꿈을 응원합니다.<br>오늘도 에브라임과 함께!</span></div></div></div>';
+                    contentDiv.insertAdjacentHTML('afterbegin', bannerHtml);
+                }
+            }
+
+            screen.classList.add('active');
+            activeSubScreen = screenId;
+            history.pushState({ page: 'sub', id: screenId }, '', '#' + screenId);
+        };
+
+        window.goBackAction = function() { history.back(); };
+
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash;
+            if (hash === '#main') {
+                if (activeSubScreen !== "") {
+                    document.getElementById(activeSubScreen).querySelectorAll('input, textarea').forEach(input => input.value = '');
+                    document.getElementById(activeSubScreen).classList.remove('active');
+                    activeSubScreen = "";
+                }
+                document.getElementById('screen-branch').classList.remove('active');
+                setTimeout(() => { document.getElementById('screen-main').classList.add('active'); }, 100);
+            } else if (hash === '' || hash === '#') {
+                document.getElementById('screen-main').classList.remove('active');
+                if (activeSubScreen !== "") { document.getElementById(activeSubScreen).classList.remove('active'); activeSubScreen = ""; }
+                setTimeout(() => { document.getElementById('screen-branch').classList.add('active'); currentBranch = ""; }, 100);
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            const tagName = event.target.tagName.toLowerCase();
+            if (tagName === 'input' || tagName === 'textarea' || tagName === 'select') return;
+            if (event.key === 'Backspace') { event.preventDefault(); if (activeSubScreen !== "" || currentBranch !== "") { history.back(); } }
+        });
+
+        window.openMyPage = function() {
+            const listContainer = document.getElementById('mypage-list');
+            listContainer.innerHTML = '';
+            const myItems = myInquiryKeys.map(k => allInquiries[k]).filter(Boolean).reverse();
+            if (myItems.length === 0) {
+                listContainer.innerHTML = '<div class="empty-history"><i class="far fa-folder-open" style="font-size: 2.5rem; color: #E0E0E0; margin-bottom: 15px; display:block;"></i>아직 문의 또는 요청하신 내역이 없습니다.</div>';
+            } else {
+                myItems.forEach(item => {
+                    const statusText = item.status === 'PENDING' ? '처리 대기' : '조치 완료';
+                    const badgeClass = item.status === 'PENDING' ? 'badge-pending' : 'badge-completed';
+                    const card = document.createElement('div');
+                    card.className = 'history-card';
+                    card.innerHTML = `<div class="history-header"><span class="history-branch">${item.branch} · ${item.category}</span><span class="history-time">${item.time}</span></div><div class="history-body"><div class="history-content">${item.content} <br><span style="font-size:0.8rem; color:#9E9E9E;">(좌석/구역: ${item.seat})</span></div><div class="history-badge ${badgeClass}">${statusText}</div></div>`;
+                    listContainer.appendChild(card);
+                });
+            }
+            window.openSubScreen('screen-mypage');
+        };
+
+        function getFormattedDateTime() {
+            const now = new Date();
+            return `${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+        }
+
+        function setLoading(btnId, isLoading) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            btn.disabled = isLoading;
+            btn.innerHTML = isLoading ? '<i class="fas fa-spinner fa-spin"></i> 전송 중...' : btn.dataset.originalText;
+        }
+
+        async function saveInquiry(newInquiry, btnId, successMsg) {
+            const btn = document.getElementById(btnId);
+            if (btn) btn.dataset.originalText = btn.innerHTML;
+            setLoading(btnId, true);
+            try {
+                const newRef = await push(inquiriesRef, { ...newInquiry, timestamp: Date.now() });
+                myInquiryKeys.push(newRef.key);
+                sessionStorage.setItem('myInquiryKeys', JSON.stringify(myInquiryKeys));
+                alert(successMsg);
+                history.back();
+            } catch (e) {
+                console.error(e);
+                alert("전송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+            } finally {
+                setLoading(btnId, false);
+            }
+        }
+
+        window.submitComplain = async function() {
+            const seatVal = document.getElementById('complain-seat').value;
+            const typeVal = document.getElementById('complain-type').value;
+            const detailVal = document.getElementById('complain-detail').value;
+            if (!seatVal) { alert("좌석 번호 또는 구역을 입력해 주세요."); return; }
+            let category = "기타";
+            if (typeVal.includes("[소음/매너]")) category = "소음";
+            else if (typeVal.includes("[온도 조절]")) category = "온도";
+            else if (typeVal.includes("[클리닝]")) category = "청소";
+            let content = typeVal.replace(/\[.*?\]\s*/, '');
+            if (detailVal) content += " - " + detailVal;
+            const newInquiry = { id: Date.now().toString().slice(-6), branch: currentBranch, category, seat: seatVal, content, time: getFormattedDateTime(), status: 'PENDING' };
+            await saveInquiry(newInquiry, 'btn-complain', `[${currentBranch}]\n관리자에게 긴급 알림이 전송되었습니다.\n신속하게 조치하겠습니다.`);
+        };
+
+        window.submitForm = async function(screenId, category, selectId, detailId, seatId) {
+            const selectVal = selectId ? document.getElementById(selectId).value : "";
+            const detailVal = detailId ? document.getElementById(detailId).value : "";
+            const seatVal = seatId ? document.getElementById(seatId).value : "N/A";
+            if (!selectVal && !detailVal) { alert("문의하실 내용을 작성해 주세요."); return; }
+            let content = selectVal || "";
+            if (selectVal && detailVal) content += " - " + detailVal;
+            else if (!selectVal && detailVal) content = detailVal;
+            const btnId = { 'screen-payment': 'btn-payment', 'screen-room': 'btn-room', 'screen-locker': 'btn-locker', 'screen-inquiry': 'btn-inquiry' }[screenId] || '';
+            const newInquiry = { id: Date.now().toString().slice(-6), branch: currentBranch, category, seat: seatVal || "N/A", content, time: getFormattedDateTime(), status: 'PENDING' };
+            await saveInquiry(newInquiry, btnId, `[${currentBranch}]\n성공적으로 접수되었습니다.\n관리자가 확인 후 안내해 드리겠습니다.`);
+        };
+    </script>
 </body>
 </html>
