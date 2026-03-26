@@ -119,6 +119,10 @@
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 100px 20px; color: var(--text-light); background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
         .empty-state i { font-size: 4rem; color: #EEE; margin-bottom: 20px; }
 
+        .bottom-actions { position: fixed; bottom: 20px; right: 25px; display: flex; gap: 10px; z-index: 100; }
+        .reset-btn { background: #FFF5F5; border: 1px solid #FFCDD2; color: var(--pending); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow); transition: all 0.2s; }
+        .reset-btn:hover { background: var(--pending); color: white; }
+
         /* 모바일 대응 최적화 */
         @media (max-width: 600px) {
             .top-bar { padding: 15px; }
@@ -211,6 +215,12 @@
             <div class="cards-grid" id="cards-wrap">
                 <!-- Cards will be injected here -->
             </div>
+        </div>
+
+        <div class="bottom-actions">
+            <button class="reset-btn" onclick="clearAllData()" title="데이터 초기화">
+                <i class="fas fa-trash-alt"></i>
+            </button>
         </div>
     </div>
 
@@ -351,6 +361,15 @@
             } catch(e) { alert('업데이트 실패'); }
         };
 
+        window.clearAllData = async function() {
+            if (confirm('모든 접수 데이터를 삭제하시겠습니까?\n\n⚠️ 되돌릴 수 없습니다.')) {
+                try {
+                    await remove(inquiriesRef);
+                    alert('초기화 완료!');
+                } catch(e) { alert('삭제 중 오류가 발생했습니다.'); }
+            }
+        };
+
         // Filter Event Listeners
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -382,7 +401,7 @@
             
             let csv = "\uFEFF지점,카테고리,좌석,연락처,내용,시간,상태\n";
             allInquiries.forEach(i => {
-                csv += `"${i.branch}","${i.category}","${i.seat}","${i.phone || ''}","${i.content.replace(/"/g, '""')}","${i.time}","${i.status}"\n`;
+                csv += `"${i.branch}","${i.category}","${i.seat}","${i.phone || ''}","${i.content.replace(/"/g, '""').replace(/\n/g, ' ')}","${i.time}","${i.status}"\n`;
             });
 
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
