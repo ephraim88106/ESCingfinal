@@ -14,7 +14,12 @@ A modern, framework-less web application for study cafe concierge services, feat
   - **Telegram Real-time Notifications:** 
     - Integrated Telegram Bot API to send instant alerts to administrators when a new inquiry is submitted.
     - Notifications include branch name, category, seat number, **phone number**, and content.
-  - **Admin Dashboard:** Real-time monitoring of inquiries with the ability to mark as completed and view user contact information.
+  - **Premium Admin Dashboard:** 
+    - Real-time monitoring of inquiries with prioritized "Pending" status.
+    - Advanced filtering by Branch (e.g., 계양직영점) and Category (e.g., 소음, 예약문의).
+    - User contact information display with direct "Call" functionality.
+    - CSV export feature for data backup and management.
+    - Secure password protection (`12123ska`).
 - **Tech Stack:**
   - HTML5, CSS3 (Modern Baseline features like Variables, Gradients).
   - JavaScript (ES Modules, Async/Await).
