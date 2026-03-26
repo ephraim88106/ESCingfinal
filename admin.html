@@ -316,6 +316,7 @@
                     </div>
                     <div class="card-branch">${item.branch}</div>
                     <div class="card-seat">좌석/구역: ${item.seat}</div>
+                    ${item.phone ? `<div style="font-size:0.85rem; color:var(--primary); margin-bottom:8px; font-weight:500;"><i class="fas fa-phone-alt" style="margin-right:6px; font-size:0.75rem;"></i><a href="tel:${item.phone}" style="color:inherit; text-decoration:none;">${item.phone}</a></div>` : ''}
                     <div class="card-content">${item.content}</div>
                     <div class="card-bottom">
                         <span class="card-time"><i class="far fa-clock" style="margin-right:4px;"></i>${item.time || '-'}</span>

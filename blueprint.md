@@ -9,11 +9,12 @@ A modern, framework-less web application for study cafe concierge services, feat
   - Branch selection (계양직영점, 박촌역점, 부천상동점, 부천신중동점).
   - Main dashboard for concierge services.
   - Inquiry/Complain forms for payment, study rooms, lockers, and general inquiries.
+  - **Phone Number Integration:** Each inquiry form now requires a phone number to ensure administrators can contact users for feedback or confirmation.
   - History tracking for user inquiries (stored in `sessionStorage` keys).
   - **Telegram Real-time Notifications:** 
     - Integrated Telegram Bot API to send instant alerts to administrators when a new inquiry is submitted.
-    - Notifications include branch name, category, seat number, and content.
-  - **Auto-rotating Promotion Banners:** Redesigned with neutral class names (e.g., `promo-banner-container`) to prevent interference from ad-blockers and Cloudflare's Rocket Loader.
+    - Notifications include branch name, category, seat number, **phone number**, and content.
+  - **Admin Dashboard:** Real-time monitoring of inquiries with the ability to mark as completed and view user contact information.
 - **Tech Stack:**
   - HTML5, CSS3 (Modern Baseline features like Variables, Gradients).
   - JavaScript (ES Modules, Async/Await).

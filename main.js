@@ -29,6 +29,7 @@ async function sendTelegramNotification(inquiry) {
                     `📍 <b>지점:</b> ${inquiry.branch}\n` +
                     `👤 <b>카테고리:</b> ${inquiry.category}\n` +
                     `💺 <b>좌석/구역:</b> ${inquiry.seat}\n` +
+                    `📞 <b>연락처:</b> ${inquiry.phone || '미입력'}\n` +
                     `📝 <b>내용:</b> ${inquiry.content}\n` +
                     `⏰ <b>시간:</b> ${inquiry.time}`;
 
@@ -203,7 +204,7 @@ window.openMyPage = function() {
             const badgeClass = item.status === 'PENDING' ? 'badge-pending' : 'badge-completed';
             const card = document.createElement('div');
             card.className = 'history-card';
-            card.innerHTML = `<div class="history-header"><span class="history-branch">${item.branch} · ${item.category}</span><span class="history-time">${item.time}</span></div><div class="history-body"><div class="history-content">${item.content} <br><span style="font-size:0.8rem; color:#9E9E9E;">(좌석/구역: ${item.seat})</span></div><div class="history-badge ${badgeClass}">${statusText}</div></div>`;
+            card.innerHTML = `<div class="history-header"><span class="history-branch">${item.branch} · ${item.category}</span><span class="history-time">${item.time}</span></div><div class="history-body"><div class="history-content">${item.content} <br><span style="font-size:0.8rem; color:#9E9E9E;">(좌석/구역: ${item.seat}${item.phone ? ` · 연락처: ${item.phone}` : ''})</span></div><div class="history-badge ${badgeClass}">${statusText}</div></div>`;
             listContainer.appendChild(card);
         });
     }
@@ -248,6 +249,7 @@ window.submitComplain = async function() {
     const seatVal = document.getElementById('complain-seat').value;
     const typeVal = document.getElementById('complain-type').value;
     const detailVal = document.getElementById('complain-detail').value;
+    const phoneVal = document.getElementById('complain-phone').value;
     if (!seatVal) { alert("좌석 번호 또는 구역을 입력해 주세요."); return; }
     let category = "기타";
     if (typeVal.includes("[소음/매너]")) category = "소음";
@@ -255,19 +257,21 @@ window.submitComplain = async function() {
     else if (typeVal.includes("[클리닝]")) category = "청소";
     let content = typeVal.replace(/\[.*?\]\s*/, '');
     if (detailVal) content += " - " + detailVal;
-    const newInquiry = { id: Date.now().toString().slice(-6), branch: currentBranch, category, seat: seatVal, content, time: getFormattedDateTime(), status: 'PENDING' };
+    const newInquiry = { id: Date.now().toString().slice(-6), branch: currentBranch, category, seat: seatVal, content, phone: phoneVal || "", time: getFormattedDateTime(), status: 'PENDING' };
     await saveInquiry(newInquiry, 'btn-complain', `[${currentBranch}]\n관리자에게 긴급 알림이 전송되었습니다.\n신속하게 조치하겠습니다.`);
 };
 
-window.submitForm = async function(screenId, category, selectId, detailId, seatId) {
+window.submitForm = async function(screenId, category, selectId, detailId, seatId, phoneId) {
     const selectVal = selectId ? document.getElementById(selectId).value : "";
     const detailVal = detailId ? document.getElementById(detailId).value : "";
     const seatVal = seatId ? document.getElementById(seatId).value : "N/A";
+    const phoneVal = phoneId ? document.getElementById(phoneId).value : "";
     if (!selectVal && !detailVal) { alert("문의하실 내용을 작성해 주세요."); return; }
+    if (phoneId && !phoneVal) { alert("답변을 받으실 연락처를 입력해 주세요."); return; }
     let content = selectVal || "";
     if (selectVal && detailVal) content += " - " + detailVal;
     else if (!selectVal && detailVal) content = detailVal;
     const btnId = { 'screen-payment': 'btn-payment', 'screen-room': 'btn-room', 'screen-locker': 'btn-locker', 'screen-inquiry': 'btn-inquiry' }[screenId] || '';
-    const newInquiry = { id: Date.now().toString().slice(-6), branch: currentBranch, category, seat: seatVal || "N/A", content, time: getFormattedDateTime(), status: 'PENDING' };
+    const newInquiry = { id: Date.now().toString().slice(-6), branch: currentBranch, category, seat: seatVal || "N/A", content, phone: phoneVal || "", time: getFormattedDateTime(), status: 'PENDING' };
     await saveInquiry(newInquiry, btnId, `[${currentBranch}]\n성공적으로 접수되었습니다.\n관리자가 확인 후 안내해 드리겠습니다.`);
 };

@@ -358,12 +358,16 @@
             <div class="content">
                 <p style="margin-top:0; color:var(--text-light); font-size:0.9rem;">선택하신 <b id="display-price-branch" style="color:var(--primary-color);"></b>의 요금표입니다.<br>결제는 현장 무인결제기를 이용해 주세요.</p>
                 <div id="payment-content-area"></div>
-                <div class="form-group" style="margin-top: 30px;">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label" style="color:var(--text-dark);">연락처 (회신받으실 번호)</label>
+                    <input type="tel" id="payment-phone" class="premium-input" placeholder="010-0000-0000">
+                </div>
+                <div class="form-group">
                     <label class="form-label" style="color:var(--text-dark);">💬 요금 및 단체 결제 문의</label>
                     <textarea id="payment-detail" class="premium-textarea" placeholder="장기 결제 할인, 단체 이용 등 궁금하신 점을 남겨주시면 관리자가 확인 후 안내해 드립니다." style="height: 100px;"></textarea>
                 </div>
             </div>
-            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-payment" onclick="submitForm('screen-payment', '요금문의', null, 'payment-detail', null)">요금 관련 문의 남기기</button></div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-payment" onclick="submitForm('screen-payment', '요금문의', null, 'payment-detail', null, 'payment-phone')">요금 관련 문의 남기기</button></div>
         </div>
 
         <div id="screen-room" class="screen">
@@ -372,12 +376,16 @@
                 <p style="margin-top:0; color:var(--text-light); font-size:0.9rem;">선택하신 <b id="display-room-branch" style="color:var(--primary-color);"></b>의 스터디룸 정보입니다.</p>
                 <div id="room-content-area" style="margin-bottom: 20px;"></div>
                 <div class="info-card" style="background:#F8F9FA;"><i class="fas fa-info-circle" style="color:var(--text-light);"></i><div class="info-text-wrap"><div class="info-title" style="color:var(--primary-color);">간편 예약 방법</div><div class="info-desc">아래 문의 폼에 <b>[이용 날짜 / 시간 / 인원수]</b>를 남겨주시면 관리자가 실시간으로 확인 후 확정 안내 문자를 보내드립니다.</div></div></div>
-                <div class="form-group" style="margin-top: 30px;">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-label" style="color:var(--text-dark);">연락처 (예약 확정 안내용)</label>
+                    <input type="tel" id="room-phone" class="premium-input" placeholder="010-0000-0000">
+                </div>
+                <div class="form-group">
                     <label class="form-label" style="color:var(--text-dark);">💬 사전 예약 및 정기 이용 문의</label>
                     <textarea id="room-detail" class="premium-textarea" placeholder="희망하시는 [날짜, 시간, 인원수] 및 장기 정기 이용 문의를 자유롭게 남겨주세요." style="height: 100px;"></textarea>
                 </div>
             </div>
-            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-room" onclick="submitForm('screen-room', '예약문의', null, 'room-detail', null)">스터디룸 예약 문의하기</button></div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-room" onclick="submitForm('screen-room', '예약문의', null, 'room-detail', null, 'room-phone')">스터디룸 예약 문의하기</button></div>
         </div>
 
         <div id="screen-locker" class="screen">
@@ -392,9 +400,10 @@
                         <option value="사물함 고장 및 수리 요청">사물함 고장 신고</option>
                     </select>
                 </div>
+                <div class="form-group"><label class="form-label">연락처 (안내 문자 수신용)</label><input type="tel" id="locker-phone" class="premium-input" placeholder="010-0000-0000"></div>
                 <div class="form-group"><label class="form-label">사물함 번호 (기존 이용자만)</label><input type="text" id="locker-num" class="premium-input" placeholder="신규 신청인 경우 비워두셔도 됩니다."></div>
             </div>
-            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-locker" onclick="submitForm('screen-locker', '사물함', 'locker-type', null, 'locker-num')">관리자에게 전송하기</button></div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-locker" onclick="submitForm('screen-locker', '사물함', 'locker-type', null, 'locker-num', 'locker-phone')">관리자에게 전송하기</button></div>
         </div>
 
         <div id="screen-complain" class="screen">
@@ -416,6 +425,7 @@
                     </select>
                 </div>
                 <div class="form-group"><label class="form-label">현재 계신 좌석 번호 또는 구역</label><input type="text" id="complain-seat" class="premium-input" placeholder="예: 15번 좌석, 라운지 등"></div>
+                <div class="form-group"><label class="form-label">연락처 (선택 사항)</label><input type="tel" id="complain-phone" class="premium-input" placeholder="010-0000-0000"></div>
                 <div class="form-group"><label class="form-label">상세 내용 (선택)</label><textarea id="complain-detail" class="premium-textarea" placeholder="빠른 조치를 위해 상황을 간단히 적어주세요."></textarea></div>
             </div>
             <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-complain" style="background-color:#EF5350;" onclick="submitComplain()">관리자에게 즉시 알림</button></div>
@@ -459,9 +469,10 @@
                         <option value="기타 건의사항">기타 건의사항</option>
                     </select>
                 </div>
+                <div class="form-group"><label class="form-label">연락처 (회신받으실 번호)</label><input type="tel" id="inquiry-phone" class="premium-input" placeholder="010-0000-0000"></div>
                 <div class="form-group"><label class="form-label">상세 내용</label><textarea id="inquiry-detail" class="premium-textarea" placeholder="건의 및 문의하실 내용을 자세히 적어주세요." style="height: 150px;"></textarea></div>
             </div>
-            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-inquiry" onclick="submitForm('screen-inquiry', '기타', 'inquiry-cat', 'inquiry-detail')">문의글 남기기</button></div>
+            <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-inquiry" onclick="submitForm('screen-inquiry', '기타', 'inquiry-cat', 'inquiry-detail', null, 'inquiry-phone')">문의글 남기기</button></div>
         </div>
 
     </div>
