@@ -6,7 +6,7 @@ A modern, framework-less web application for study cafe concierge services, feat
 ## Project Outline
 - **Design:** Premium, tactile feel with subtle noise textures and multi-layered shadows.
 - **Features:**
-  - Branch selection (계양직영점, 박촌역점, 부천상동점, 부천신중동점).
+  - Branch selection (계양직영점, 박촌역점, 부천상동점, 부천신중동점, 부평삼산점).
   - Main dashboard for concierge services.
   - Inquiry/Complain forms for payment, study rooms, lockers, and general inquiries.
   - **Phone Number Integration:** Each inquiry form now requires a phone number to ensure administrators can contact users for feedback or confirmation.

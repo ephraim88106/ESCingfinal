@@ -6,10 +6,10 @@ import { getDatabase, ref, push, onValue, query, orderByChild } from "https://ww
 // ======================================================
 const firebaseConfig = {
     apiKey: "AIzaSyCt-HiQkDoeAxnJN7VwsmEpoxwWQmCC69E",
-    authDomain: "esc-info-92948.firebaseapp.com",
-    databaseURL: "https://esc-info-92948-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "esc-info-92948",
-    storageBucket: "esc-info-92948.firebasestorage.app",
+    authDomain: "esc-info-86e12.firebaseapp.com",
+    databaseURL: "https://esc-info-86e12-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "esc-info-86e12",
+    storageBucket: "esc-info-86e12.firebasestorage.app",
     messagingSenderId: "411200026634",
     appId: "1:411200026634:web:afd8074af0d02ee93087f3"
 };
@@ -78,9 +78,9 @@ const sinjungdongPricingArray = [
     { title: "고정석 이용권", note: "", icon: "fas fa-chair", items: [ {time: "2주", price: "130,000원"}, {time: "4주", price: "190,000원"}, {time: "8주", price: "370,000원"}, {time: "12주", price: "540,000원"}, {time: "16주", price: "700,000원"} ] },
     { title: "사물함 요금", note: "*무인결제기에서 결제 후 사용 가능", icon: "fas fa-box", items: [ {time: "4주", price: "10,000원"}, {time: "8주", price: "19,000원"}, {time: "12주", price: "28,000원"} ] }
 ];
-const branchPricingData = { '계양직영점': commonPricingArray, '박촌역점': commonPricingArray, '부천상동점': commonPricingArray, '부천신중동점': sinjungdongPricingArray, 'default': [ { title: "안내", note: "", icon: "fas fa-info-circle", items: [ {time: "요금표 준비 중", price: "-"} ] } ] };
-const branchRoomData = { '계양직영점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" }, { title: "스터디룸2 (6인)", desc: "1시간 10,000원", icon: "fas fa-users-cog" } ], '박촌역점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천상동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천신중동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], 'default': [ { title: "안내", desc: "스터디룸 정보 준비 중", icon: "fas fa-info-circle" } ] };
-const branchWifiData = { '계양직영점': 'hello1234', '박촌역점': 'escbc0909', '부천상동점': 'escsd0909', '부천신중동점': 'escjd0909', 'default': '안내 데스크 문의' };
+const branchPricingData = { '계양직영점': commonPricingArray, '박촌역점': commonPricingArray, '부천상동점': commonPricingArray, '부천신중동점': sinjungdongPricingArray, '부평삼산점': commonPricingArray, 'default': [ { title: "안내", note: "", icon: "fas fa-info-circle", items: [ {time: "요금표 준비 중", price: "-"} ] } ] };
+const branchRoomData = { '계양직영점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" }, { title: "스터디룸2 (6인)", desc: "1시간 10,000원", icon: "fas fa-users-cog" } ], '박촌역점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천상동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천신중동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부평삼산점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], 'default': [ { title: "안내", desc: "스터디룸 정보 준비 중", icon: "fas fa-info-circle" } ] };
+const branchWifiData = { '계양직영점': 'hello1234', '박촌역점': 'escbc0909', '부천상동점': 'escsd0909', '부천신중동점': 'escjd0909', '부평삼산점': 'escss0909', 'default': '안내 데스크 문의' };
 
 // ---- 초기화 및 이벤트 리스너 ----
 document.addEventListener('DOMContentLoaded', () => {
