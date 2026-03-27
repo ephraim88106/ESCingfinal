@@ -78,7 +78,13 @@ const sinjungdongPricingArray = [
     { title: "고정석 이용권", note: "", icon: "fas fa-chair", items: [ {time: "2주", price: "130,000원"}, {time: "4주", price: "190,000원"}, {time: "8주", price: "370,000원"}, {time: "12주", price: "540,000원"}, {time: "16주", price: "700,000원"} ] },
     { title: "사물함 요금", note: "*무인결제기에서 결제 후 사용 가능", icon: "fas fa-box", items: [ {time: "4주", price: "10,000원"}, {time: "8주", price: "19,000원"}, {time: "12주", price: "28,000원"} ] }
 ];
-const branchPricingData = { '계양직영점': commonPricingArray, '박촌역점': commonPricingArray, '부천상동점': commonPricingArray, '부천신중동점': sinjungdongPricingArray, '부평삼산점': commonPricingArray, 'default': [ { title: "안내", note: "", icon: "fas fa-info-circle", items: [ {time: "요금표 준비 중", price: "-"} ] } ] };
+const samsanPricingArray = [
+    { title: "일일 이용권", note: "*환불, 시간 정지 불가", icon: "fas fa-hourglass-half", items: [ {time: "2시간", price: "4,000원"}, {time: "4시간", price: "7,000원"}, {time: "6시간", price: "9,000원"}, {time: "8시간", price: "10,000원"}, {time: "12시간", price: "13,000원"} ] },
+    { title: "시간 이용권", note: "*퇴장시 반드시 퇴실 체크", icon: "fas fa-stopwatch", items: [ {time: "30시간", price: "50,000원"}, {time: "50시간", price: "65,000원"}, {time: "100시간", price: "120,000원"}, {time: "200시간", price: "220,000원"} ] },
+    { title: "기간권", note: "*퇴장시 반드시 퇴실 체크", icon: "far fa-calendar-alt", items: [ {time: "2주", price: "90,000원"}, {time: "4주", price: "140,000원"}, {time: "8주", price: "270,000원"}, {time: "12주", price: "400,000원"}, {time: "16주", price: "530,000원"} ] },
+    { title: "사물함 요금", note: "*무인결제기에서 결제 후 사용 가능", icon: "fas fa-box", items: [ {time: "4주", price: "10,000원"}, {time: "8주", price: "19,000원"}, {time: "12주", price: "28,000원"} ] }
+];
+const branchPricingData = { '계양직영점': commonPricingArray, '박촌역점': commonPricingArray, '부천상동점': commonPricingArray, '부천신중동점': sinjungdongPricingArray, '부평삼산점': samsanPricingArray, 'default': [ { title: "안내", note: "", icon: "fas fa-info-circle", items: [ {time: "요금표 준비 중", price: "-"} ] } ] };
 const branchRoomData = { '계양직영점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" }, { title: "스터디룸2 (6인)", desc: "1시간 10,000원", icon: "fas fa-users-cog" } ], '박촌역점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천상동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천신중동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부평삼산점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], 'default': [ { title: "안내", desc: "스터디룸 정보 준비 중", icon: "fas fa-info-circle" } ] };
 const branchWifiData = { '계양직영점': 'hello1234', '박촌역점': 'escbc0909', '부천상동점': 'escsd0909', '부천신중동점': 'escjd0909', '부평삼산점': 'escss0909', 'default': '안내 데스크 문의' };
 
