@@ -9,6 +9,9 @@ A modern, framework-less web application for study cafe concierge services, feat
   - Branch selection (계양직영점, 박촌역점, 부천상동점, 부천신중동점, 부평삼산점).
   - Main dashboard for concierge services.
   - Inquiry/Complain forms for payment, study rooms, lockers, and general inquiries.
+  - **Brand Story (About Us):**
+    - Detailed brand narrative emphasizing premium quality, professional care, and localized identity.
+    - Accessible from the branch selection screen footer and main dashboard promo banner.
   - **Phone Number Integration:** Each inquiry form now requires a phone number to ensure administrators can contact users for feedback or confirmation.
   - History tracking for user inquiries (stored in `sessionStorage` keys).
   - **Telegram Real-time Notifications:** 
@@ -20,22 +23,22 @@ A modern, framework-less web application for study cafe concierge services, feat
     - User contact information display with direct "Call" functionality.
     - CSV export feature for data backup and management.
     - Secure password protection (`12123ska`).
+  - **AdSense Optimization:**
+    - Added rich text sections to the landing screen to increase "publisher content" value.
+    - Implemented benefit-driven information architecture to reduce "navigation-only" feel.
+    - Added `robots.txt` for better crawler indexing.
+    - Optimized header tags (H1, H2) for SEO.
 - **Tech Stack:**
   - HTML5, CSS3 (Modern Baseline features like Variables, Gradients).
   - JavaScript (ES Modules, Async/Await).
   - Firebase Realtime Database (integrated via CDN).
   - Font Awesome for iconography.
 
-## Current Plan: Fix Banner and Synchronization
-1. **Fix Banner Reliability:**
-   - Renamed all "ad" related classes to "promo" or "notice" to avoid ad-blocker detection.
-   - Moved all JavaScript logic from `index.html` to `main.js`.
-   - Wrapped initialization in `DOMContentLoaded` for better reliability in cloud environments.
-2. **GitHub Synchronization:**
-   - Linked local repository to `https://github.com/ephraim88106/ESCingfinal.git`.
-   - Committed all current changes.
-   - Pushed to `main` branch.
-3. **Deployment:**
-   - Primary Hosting: **Cloudflare Pages** (`https://escadmin.pages.dev`)
-   - Backend/Database: Firebase Realtime Database (`esc-info-92948`)
-   - Status: Active and Automatically updated via GitHub push.
+## Current Plan: Completed Brand Story Enhancement
+1. **Update Brand Story Content:**
+   - Replaced placeholder text in `#screen-about` with the official brand story.
+   - Improved visual layout and typography for better readability and premium feel using Playfair Display and accent styling.
+   - Structured content around the three pillars: Premium Standard, Professional Care, and Localized Identity.
+2. **Verification:**
+   - Verified navigation from both the branch selection screen and the main screen promo banner.
+   - Confirmed layout adapts well to the mobile-first design (375px width).
