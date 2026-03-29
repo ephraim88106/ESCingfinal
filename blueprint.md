@@ -28,6 +28,10 @@ A modern, framework-less web application for study cafe concierge services, feat
     - Implemented benefit-driven information architecture to reduce "navigation-only" feel.
     - Added `robots.txt` for better crawler indexing.
     - Optimized header tags (H1, H2) for SEO.
+  - **Banner Slideshow Integration:**
+    - Integrated a specialized promotional slide within the main dashboard banner.
+    - Added an external affiliate link (Coupang) for study-related essential items.
+    - Updated CSS animations to support a multi-slide transition (3 slides).
 - **Tech Stack:**
   - HTML5, CSS3 (Modern Baseline features like Variables, Gradients).
   - JavaScript (ES Modules, Async/Await).

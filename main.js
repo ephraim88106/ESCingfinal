@@ -150,7 +150,7 @@ window.openSubScreen = function(screenId) {
         const contentDiv = screen.querySelector('.content');
         if (contentDiv) {
             const bannerHtml = `
-                <div class="promo-banner-container" style="cursor:default;">
+                <div class="promo-banner-container">
                     <div class="promo-slider">
                         <div class="promo-slide promo-bg-1">
                             <span class="promo-badge">안내</span>
@@ -159,6 +159,10 @@ window.openSubScreen = function(screenId) {
                         <div class="promo-slide promo-bg-2">
                             <span class="promo-badge">응원</span>
                             <span class="promo-text">✨ 당신의 찬란한 꿈을 응원합니다.<br>오늘도 에브라임과 함께!</span>
+                        </div>
+                        <div class="promo-slide promo-bg-3" onclick="window.open('https://link.coupang.com/a/edUJG5', '_blank')">
+                            <span class="promo-badge">Shop</span>
+                            <span class="promo-text">📖 집중력 UP! 학습 필수템<br>에브라임 추천 아이템 보러가기</span>
                         </div>
                     </div>
                 </div>`;
