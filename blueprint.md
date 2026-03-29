@@ -32,6 +32,7 @@ A modern, framework-less web application for study cafe concierge services, feat
     - Integrated a specialized promotional slide within the main dashboard banner.
     - Added an external affiliate link (Coupang) for study-related essential items.
     - Updated CSS animations to support a multi-slide transition (3 slides).
+    - Added mandatory Coupang Partners disclaimer text below all promotional banners for legal compliance.
 - **Tech Stack:**
   - HTML5, CSS3 (Modern Baseline features like Variables, Gradients).
   - JavaScript (ES Modules, Async/Await).

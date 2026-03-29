@@ -165,7 +165,8 @@ window.openSubScreen = function(screenId) {
                             <span class="promo-text">📖 집중력 UP! 학습 필수템<br>에브라임 추천 아이템 보러가기</span>
                         </div>
                     </div>
-                </div>`;
+                </div>
+                <div class="coupang-disclaimer">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>`;
             contentDiv.insertAdjacentHTML('afterbegin', bannerHtml);
         }
     }
