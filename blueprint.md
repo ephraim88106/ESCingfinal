@@ -12,6 +12,9 @@ A modern, framework-less web application for study cafe concierge services, feat
   - **Google Tag Manager Integration:**
     - Integrated Google Tag (gtag.js) with ID `G-XE9JJV0QYP` into `index.html` and `admin.html`.
     - Enables tracking and analytics for user interactions across the application.
+  - **Microsoft Clarity Integration:**
+    - Integrated Microsoft Clarity tracking script (Project ID: `w5czncrdn1`) into `index.html` and `admin.html`.
+    - Provides heatmaps, session recordings, and advanced user behavior insights.
   - **Payment Info:** Removed inquiry form from the payment screen to streamline the interface, directing users to other specialized inquiry channels if needed.
   - **Brand Story (About Us):**
     - Detailed brand narrative emphasizing premium quality, professional care, and localized identity.
