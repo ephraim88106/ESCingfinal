@@ -8,15 +8,17 @@ A modern, framework-less web application for study cafe concierge services, feat
 - **Features:**
   - Branch selection (계양직영점, 박촌역점, 부천상동점, 부천신중동점, 부평삼산점).
   - Main dashboard for concierge services.
-  - Inquiry/Complain forms for payment, study rooms, lockers, and general inquiries.
+  - Inquiry/Complain forms for study rooms, lockers, and general inquiries.
+  - **Payment Info:** Removed inquiry form from the payment screen to streamline the interface, directing users to other specialized inquiry channels if needed.
   - **Brand Story (About Us):**
     - Detailed brand narrative emphasizing premium quality, professional care, and localized identity.
     - Accessible from the branch selection screen footer and main dashboard promo banner.
-  - **Phone Number Integration:** Each inquiry form now requires a phone number to ensure administrators can contact users for feedback or confirmation.
+  - **Phone Number Integration:** Each inquiry form requires a phone number to ensure administrators can contact users for feedback or confirmation.
   - History tracking for user inquiries (stored in `sessionStorage` keys).
   - **Telegram Real-time Notifications:** 
     - Integrated Telegram Bot API to send instant alerts to administrators when a new inquiry is submitted.
-    - Notifications include branch name, category, seat number, **phone number**, and content.
+    - **Enhanced Category Visibility:** Notifications now include the inquiry category in the header (e.g., `🔔 [에브라임 - 소음]`) for immediate identification.
+    - Notifications include branch name, category, seat number, phone number, and content.
   - **Premium Admin Dashboard:** 
     - Real-time monitoring of inquiries with prioritized "Pending" status.
     - Advanced filtering by Branch (e.g., 계양직영점) and Category (e.g., 소음, 예약문의).
@@ -39,11 +41,11 @@ A modern, framework-less web application for study cafe concierge services, feat
   - Firebase Realtime Database (integrated via CDN).
   - Font Awesome for iconography.
 
-## Current Plan: Completed Brand Story Enhancement
-1. **Update Brand Story Content:**
-   - Replaced placeholder text in `#screen-about` with the official brand story.
-   - Improved visual layout and typography for better readability and premium feel using Playfair Display and accent styling.
-   - Structured content around the three pillars: Premium Standard, Professional Care, and Localized Identity.
-2. **Verification:**
-   - Verified navigation from both the branch selection screen and the main screen promo banner.
-   - Confirmed layout adapts well to the mobile-first design (375px width).
+## Current Plan: UI Cleanup and Notification Enhancement
+1. **Remove Payment Inquiry Form:**
+   - Removed the contact input, inquiry textarea, and submit button from the '이용권 요금 안내' screen as requested.
+2. **Enhance Telegram Notifications:**
+   - Updated the notification payload to include the specific category in the message header for faster recognition by administrators.
+3. **Verification:**
+   - Confirmed the payment screen is now informative only.
+   - Verified that all other inquiry screens still function and capture the necessary category/contact information.

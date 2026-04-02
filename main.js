@@ -25,7 +25,7 @@ const TELEGRAM_BOT_TOKEN = "8613163185:AAGBPtBj6m8Fuo3e_390gZ0GvVg3kDfOfgw";
 const TELEGRAM_CHAT_IDS = ["8478291658"];
 
 async function sendTelegramNotification(inquiry) {
-    const message = `<b>🔔 [에브라임] 새로운 문의 접수</b>\n\n` +
+    const message = `<b>🔔 [에브라임 - ${inquiry.category}] 새로운 문의 접수</b>\n\n` +
                     `📍 <b>지점:</b> ${inquiry.branch}\n` +
                     `👤 <b>카테고리:</b> ${inquiry.category}\n` +
                     `💺 <b>좌석/구역:</b> ${inquiry.seat}\n` +
