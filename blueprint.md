@@ -9,6 +9,9 @@ A modern, framework-less web application for study cafe concierge services, feat
   - Branch selection (계양직영점, 박촌역점, 부천상동점, 부천신중동점, 부평삼산점).
   - Main dashboard for concierge services.
   - Inquiry/Complain forms for study rooms, lockers, and general inquiries.
+  - **Google Tag Manager Integration:**
+    - Integrated Google Tag (gtag.js) with ID `G-XE9JJV0QYP` into `index.html` and `admin.html`.
+    - Enables tracking and analytics for user interactions across the application.
   - **Payment Info:** Removed inquiry form from the payment screen to streamline the interface, directing users to other specialized inquiry channels if needed.
   - **Brand Story (About Us):**
     - Detailed brand narrative emphasizing premium quality, professional care, and localized identity.
