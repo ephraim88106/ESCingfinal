@@ -21,8 +21,8 @@ const inquiriesRef = ref(db, 'inquiries');
 // ======================================================
 // ✈️ Telegram Notification Configuration
 // ======================================================
-const TELEGRAM_BOT_TOKEN = "8437130594:AAH6xOucJ6d2cbC_lnL7nc9LttOx9cq63xc";
-const TELEGRAM_CHAT_IDS = ["8478291658", "8789976868"];
+const TELEGRAM_BOT_TOKEN = "8613163185:AAGBPtBj6m8Fuo3e_390gZ0GvVg3kDfOfgw";
+const TELEGRAM_CHAT_IDS = ["8478291658"];
 
 async function sendTelegramNotification(inquiry) {
     const message = `<b>🔔 [에브라임] 새로운 문의 접수</b>\n\n` +
