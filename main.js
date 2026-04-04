@@ -356,60 +356,146 @@ function addQuickReplies(options) {
     msgs.scrollTop = msgs.scrollHeight;
 }
 
-const WORKER_URL = 'https://ephraim-chatbot.namho1123.workers.dev';
-
-function showTyping() {
+function showTypingThenReply(html, quickReplies) {
     const msgs = document.getElementById('chatbot-messages');
     const typing = document.createElement('div');
     typing.className = 'chat-msg bot';
-    typing.id = 'chat-typing-indicator';
     typing.innerHTML = '<div class="chat-typing"><span></span><span></span><span></span></div>';
     msgs.appendChild(typing);
     msgs.scrollTop = msgs.scrollHeight;
-}
-
-function removeTyping() {
-    const el = document.getElementById('chat-typing-indicator');
-    if (el) el.remove();
-}
-
-async function handleChatInput(text) {
-    addUserMessage(text);
-    showTyping();
-
-    // 입력 비활성화
-    const input = document.getElementById('chatbot-input');
-    const sendBtn = document.querySelector('.chatbot-send');
-    input.disabled = true;
-    sendBtn.disabled = true;
-
-    try {
-        const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, branch: currentBranch }),
-        });
-
-        const data = await res.json();
-        removeTyping();
-
-        if (data.reply) {
-            addBotMessage(data.reply);
-        } else {
-            addBotMessage(data.error || '죄송합니다, 응답을 받지 못했습니다.');
+    setTimeout(() => {
+        typing.remove();
+        addBotMessage(html);
+        if (quickReplies) {
+            setTimeout(() => addQuickReplies(quickReplies), 200);
         }
-    } catch (e) {
-        removeTyping();
-        addBotMessage('네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+    }, 600 + Math.random() * 400);
+}
+
+function getChatbotResponse(input) {
+    const q = input.toLowerCase().replace(/\s/g, '');
+    const branch = currentBranch;
+
+    // 요금 관련
+    if (q.includes('요금') || q.includes('가격') || q.includes('얼마') || q.includes('이용권') || q.includes('price')) {
+        const data = branchPricingData[branch] || branchPricingData['default'];
+        let reply = `<b>${branch} 요금 안내</b>\n\n`;
+        data.forEach(section => {
+            reply += `<b>${section.title}</b>\n`;
+            section.items.forEach(item => {
+                const time = item.time.replace(/<[^>]*>/g, '');
+                const price = item.price.replace(/<[^>]*>/g, '');
+                reply += `<span class="price-line"><span>${time}</span><span><b>${price}</b></span></span>`;
+            });
+            reply += '\n';
+        });
+        reply += `\n자세한 사항은 <b>"이용권 요금 안내"</b> 메뉴를 확인해 주세요.`;
+        return { text: reply, quick: ['와이파이', '스터디룸', '사물함', '처음으로'] };
     }
 
-    // 입력 다시 활성화
-    input.disabled = false;
-    sendBtn.disabled = false;
-    input.focus();
+    // 와이파이
+    if (q.includes('와이파이') || q.includes('wifi') || q.includes('비번') || q.includes('비밀번호') || q.includes('인터넷')) {
+        const pw = branchWifiData[branch] || branchWifiData['default'];
+        return {
+            text: `<b>${branch} Wi-Fi 정보</b>\n\n📶 <b>SSID:</b> ephraim01 ~ 04\n🔑 <b>비밀번호:</b> <b>${pw}</b>\n\n접속이 안 되시면 불편 접수를 이용해 주세요.`,
+            quick: ['요금 안내', '스터디룸', '불편 접수', '처음으로']
+        };
+    }
 
-    // 빠른 답변 버튼 표시
-    setTimeout(() => addQuickReplies(['요금 안내', '와이파이', '스터디룸', '사물함', '불편 접수']), 300);
+    // 스터디룸
+    if (q.includes('스터디룸') || q.includes('스터디') || q.includes('룸') || q.includes('예약')) {
+        const rooms = branchRoomData[branch] || branchRoomData['default'];
+        let reply = `<b>${branch} 스터디룸 안내</b>\n\n`;
+        rooms.forEach(room => {
+            reply += `📌 <b>${room.title}</b>\n${room.desc}\n\n`;
+        });
+        reply += `예약은 <b>"스터디룸 가이드"</b> 메뉴에서\n[날짜/시간/인원수]를 남겨주시면\n관리자가 확정 안내 드립니다.`;
+        return { text: reply, quick: ['요금 안내', '와이파이', '사물함', '처음으로'] };
+    }
+
+    // 사물함
+    if (q.includes('사물함') || q.includes('locker') || q.includes('락커')) {
+        return {
+            text: `<b>사물함 이용 안내</b>\n\n📦 신규 신청, 기간 연장, 비밀번호 초기화 등\n모든 사물함 관련 업무는 <b>"사물함 신청"</b> 메뉴에서\n처리 가능합니다.\n\n<b>요금:</b> 4주 10,000원 / 8주 19,000원 / 12주 28,000원\n\n무인결제기에서 결제 후 사용하실 수 있습니다.`,
+            quick: ['요금 안내', '와이파이', '불편 접수', '처음으로']
+        };
+    }
+
+    // 이용 시간 / 운영시간
+    if (q.includes('시간') || q.includes('운영') || q.includes('영업') || q.includes('24시') || q.includes('몇시')) {
+        return {
+            text: `<b>운영 시간 안내</b>\n\n🕐 에브라임은 <b>365일 24시간</b> 운영됩니다.\n\n언제든 편하게 방문해 주세요.\n심야 시간대에도 관리자가 상주합니다.`,
+            quick: ['요금 안내', '와이파이', '스터디룸', '처음으로']
+        };
+    }
+
+    // 불편 접수
+    if (q.includes('불편') || q.includes('소음') || q.includes('시끄') || q.includes('온도') || q.includes('춥') || q.includes('더') || q.includes('청소') || q.includes('접수') || q.includes('신고')) {
+        return {
+            text: `<b>불편 접수 안내</b>\n\n🔔 현장 불편사항은 <b>"불편 사항 접수"</b> 메뉴를 이용해 주세요.\n\n접수 즉시 관리자에게 긴급 알림이 전송되며,\n<b>익명성은 철저히 보장</b>됩니다.\n\n빠르게 조치하겠습니다!`,
+            quick: ['요금 안내', '와이파이', '처음으로']
+        };
+    }
+
+    // 커피/라운지
+    if (q.includes('커피') || q.includes('음료') || q.includes('라운지') || q.includes('간식') || q.includes('스낵')) {
+        return {
+            text: `<b>라운지 서비스 안내</b>\n\n☕ 최고급 스페셜티 원두커피와 다양한 티백,\n간단한 스낵이 <b>무료</b>로 제공됩니다.\n\n개인 텀블러 사용을 권장하며,\n냄새나는 음식물 반입은 제한됩니다.`,
+            quick: ['요금 안내', '와이파이', '처음으로']
+        };
+    }
+
+    // 프린터
+    if (q.includes('프린터') || q.includes('프린트') || q.includes('인쇄') || q.includes('복사') || q.includes('복합기')) {
+        return {
+            text: `<b>복합기(프린터) 이용 안내</b>\n\n🖨️ 이용권 구매 후 인쇄 및 복사가 <b>무료</b>입니다.\n\n단, 환경 보호를 위해 <b>A4 용지는 개인 지참</b>이 필수입니다.`,
+            quick: ['요금 안내', '와이파이', '처음으로']
+        };
+    }
+
+    // 환불
+    if (q.includes('환불') || q.includes('취소') || q.includes('결제')) {
+        return {
+            text: `<b>결제/환불 안내</b>\n\n💳 결제 및 환불 관련 문의는\n<b>"1:1 상세 문의"</b> 메뉴를 이용해 주세요.\n\n공정거래위원회 표준 약관에 따라\n정당한 환불 절차를 준수합니다.\n\n※ 일일 이용권은 환불/시간 정지 불가`,
+            quick: ['요금 안내', '처음으로']
+        };
+    }
+
+    // 처음으로
+    if (q.includes('처음') || q.includes('메뉴') || q.includes('다른') || q.includes('도움')) {
+        return {
+            text: `무엇을 도와드릴까요? 😊\n아래에서 원하시는 항목을 선택하거나,\n직접 질문을 입력해 주세요.`,
+            quick: ['요금 안내', '와이파이', '스터디룸', '사물함', '이용 시간', '불편 접수']
+        };
+    }
+
+    // 인사
+    if (q.includes('안녕') || q.includes('하이') || q.includes('hello') || q.includes('hi')) {
+        return {
+            text: `안녕하세요! 😊\n<b>${branch}</b> 에브라임 AI 안내입니다.\n무엇이든 편하게 물어보세요!`,
+            quick: ['요금 안내', '와이파이', '스터디룸', '사물함', '이용 시간', '불편 접수']
+        };
+    }
+
+    // 감사
+    if (q.includes('감사') || q.includes('고마') || q.includes('땡큐') || q.includes('thank')) {
+        return {
+            text: `천만에요! 😊\n더 궁금한 점이 있으시면 언제든 물어보세요.\n<b>${branch}</b>에서 좋은 시간 보내세요!`,
+            quick: ['처음으로']
+        };
+    }
+
+    // 기본 응답
+    return {
+        text: `죄송합니다, 해당 내용은 정확히 파악하지 못했어요. 😅\n\n아래 항목을 선택하시거나,\n<b>"불편 접수"</b> 또는 메인의 <b>"1:1 상세 문의"</b>를\n이용해 주시면 관리자가 직접 답변 드리겠습니다.`,
+        quick: ['요금 안내', '와이파이', '스터디룸', '사물함', '불편 접수', '처음으로']
+    };
+}
+
+function handleChatInput(text) {
+    addUserMessage(text);
+    const response = getChatbotResponse(text);
+    showTypingThenReply(response.text, response.quick);
 }
 
 window.sendChatMessage = function() {
