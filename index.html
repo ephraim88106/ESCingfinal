@@ -415,7 +415,7 @@
                         <span class="notice-title"><i class="fas fa-bullhorn" style="margin-right:6px;"></i> 최신 소식</span>
                         <span class="notice-more" onclick="openSubScreen('screen-guide')">전체보기 ></span>
                     </div>
-                    <div class="notice-item" onclick="openSubScreen('screen-guide')">
+                    <div class="notice-item" onclick="openSubScreen('screen-etiquette')">
                         <span class="notice-tag">공지</span>
                         <span class="notice-text">에브라임 이용 에티켓 캠페인 안내</span>
                     </div>
@@ -536,6 +536,55 @@
                     • <strong>물리 타이머</strong>: 디지털 디바이스가 부담스럽다면 토마토 모양의 주방용 타이머가 가장 정통한 방식입니다.</p>
 
                     <p style="margin-top: 30px; font-weight: 500; text-align: center; color: var(--primary-color); background: var(--bg-color); padding: 15px; border-radius: 12px;">오늘부터 단 4뽀모도로(2시간)만 시작해 보세요.<br>일주일 뒤, 달라진 집중력을 직접 느끼실 수 있습니다.<br><br>에브라임은 당신의 몰입을 응원합니다. 🍅</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 이용 에티켓 캠페인 스크린 -->
+        <div id="screen-etiquette" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">이용 에티켓 캠페인</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <div class="text-content">
+                    <h3 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; line-height: 1.4; color: var(--primary-color);">모두의 집중을 지키는<br>작은 약속</h3>
+                    <p style="font-weight: 500; color: var(--primary-color); border-left: 3px solid var(--accent-color); padding-left: 15px; margin: 20px 0; font-style: italic;">"한 사람의 배려가, 모두의 몰입이 됩니다."</p>
+
+                    <p>에브라임 스터디카페는 모든 이용객이 최상의 집중 환경에서 학습할 수 있도록 '이용 에티켓 캠페인'을 운영하고 있습니다. 아래 내용은 강제 규칙이 아닌, 함께 지켜나가는 약속입니다. 작은 배려가 모두의 학습 효율을 높입니다.</p>
+
+                    <h3>1. 무소음 원칙</h3>
+                    <p>• <strong>키보드/마우스</strong>: 노트북 사용 시 키보드 스킨 착용을 권장합니다. 무소음 마우스 사용도 추천드립니다.<br>
+                    • <strong>통화·대화</strong>: 모든 대화와 통화는 라운지 또는 지정된 공간에서만 가능합니다. 열람실 내에서는 속삭임도 자제 부탁드립니다.<br>
+                    • <strong>이어폰 음량</strong>: 이어폰 사용 시 옆자리에 음량이 새어나가지 않도록 적정 볼륨을 유지해 주세요.<br>
+                    • <strong>알림음</strong>: 휴대폰·노트북·태블릿 모두 무음 또는 진동 모드로 설정해 주세요.</p>
+
+                    <h3>2. 좌석 사용 매너</h3>
+                    <p>• <strong>장시간 자리 비움 금지</strong>: 30분 이상 자리를 비우실 경우, 다른 이용객을 위해 짐을 정리해 주세요.<br>
+                    • <strong>좌석 정리</strong>: 퇴실 시 의자를 정돈하고 책상 위 쓰레기는 반드시 회수해 주세요.<br>
+                    • <strong>음식물 반입 제한</strong>: 열람실 내 음식물 섭취는 금지되어 있습니다. 냄새가 강한 음식은 라운지에서도 자제 부탁드립니다.<br>
+                    • <strong>다리 떨기·발 구르기</strong>: 의외로 큰 진동 소음이 됩니다. 옆자리를 위해 의식해 주세요.</p>
+
+                    <h3>3. 공용 공간 매너</h3>
+                    <p>• <strong>라운지 사용</strong>: 음료와 스낵은 자유롭게 이용 가능하지만, 다음 이용객을 위해 적정량 사용을 부탁드립니다.<br>
+                    • <strong>개인 텀블러</strong>: 환경 보호와 위생을 위해 개인 텀블러 사용을 권장합니다.<br>
+                    • <strong>냉장고 사용</strong>: 본인의 음료에 반드시 이름을 기재해 주세요. 미기재 음료는 정기적으로 정리됩니다.<br>
+                    • <strong>테이블 정리</strong>: 라운지 사용 후 테이블 위 컵·종이·부스러기를 깨끗이 치워 주세요.</p>
+
+                    <h3>4. 디지털 매너</h3>
+                    <p>• <strong>영상 시청</strong>: 강의·영상 시청 시 반드시 이어폰을 사용해 주세요.<br>
+                    • <strong>화상회의·온라인 수업</strong>: 열람실 내에서는 불가합니다. 라운지 또는 스터디룸을 이용해 주세요.<br>
+                    • <strong>키보드 타건</strong>: 격한 타건은 본인이 인지하지 못하는 사이 큰 소음이 됩니다. 의식적으로 부드럽게 눌러주세요.</p>
+
+                    <h3>5. 함께 만드는 캠페인</h3>
+                    <p>에티켓은 누구 한 명의 노력이 아니라 모두의 작은 실천으로 완성됩니다. 만약 주변에서 불편한 상황이 있다면, 직접 마찰을 빚지 마시고 <strong>'불편 사항 접수'</strong>를 통해 알려주세요. 운영진이 신속하고 정중하게 조치해 드립니다.</p>
+
+                    <div onclick="openSubScreen('screen-complain')" style="cursor:pointer; background:#FFF5F5; border:1px solid #FFCDD2; border-radius:12px; padding:14px 16px; margin:20px 0; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+                            <i class="fas fa-headset" style="color:#EF5350; font-size:1.1rem; flex-shrink:0;"></i>
+                            <span style="color:#EF5350; font-weight:700; font-size:0.95rem;">불편 사항 접수하기</span>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color:#EF5350; font-size:0.85rem;"></i>
+                    </div>
+
+                    <p style="margin-top: 30px; font-weight: 500; text-align: center; color: var(--primary-color); background: var(--bg-color); padding: 15px; border-radius: 12px;">서로를 위한 작은 배려가<br>나의 집중력으로 돌아옵니다.<br><br>에브라임은 당신의 몰입을 응원합니다. 🤝</p>
                 </div>
             </div>
         </div>
