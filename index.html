@@ -412,20 +412,11 @@
                 <!-- 최신 공지사항 섹션 -->
                 <div class="notice-section">
                     <div class="notice-header">
-                        <span class="notice-title"><i class="fas fa-bullhorn" style="margin-right:6px;"></i> 최신 소식</span>
-                        <span class="notice-more" onclick="openSubScreen('screen-guide')">전체보기 ></span>
+                        <span class="notice-title"><i class="fas fa-bullhorn" style="margin-right:6px;"></i> 공지사항</span>
+                        <span class="notice-more" onclick="openSubScreen('screen-notices')">전체보기 ></span>
                     </div>
-                    <div class="notice-item" onclick="openSubScreen('screen-etiquette')">
-                        <span class="notice-tag">공지</span>
-                        <span class="notice-text">에브라임 이용 에티켓 캠페인 안내</span>
-                    </div>
-                    <div class="notice-item" onclick="openSubScreen('screen-guide')">
-                        <span class="notice-tag">공지</span>
-                        <span class="notice-text">시험 시즌 24시간 운영 연장 안내</span>
-                    </div>
-                    <div class="notice-item" onclick="openSubScreen('screen-pomodoro')">
-                        <span class="notice-tag">가이드</span>
-                        <span class="notice-text">집중력 2배! 뽀모도로 학습법 소개</span>
+                    <div id="home-notice-list">
+                        <div class="notice-item" style="color:var(--text-light);">공지사항을 불러오는 중...</div>
                     </div>
                 </div>
 
@@ -541,6 +532,15 @@
         </div>
 
         <!-- 이용 에티켓 캠페인 스크린 -->
+        <div id="screen-notices" class="screen">
+            <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">공지사항</span><div style="width:20px;"></div></div>
+            <div class="content">
+                <div id="notices-list">
+                    <p style="text-align:center; color:var(--text-light); padding:40px 0;">불러오는 중...</p>
+                </div>
+            </div>
+        </div>
+
         <div id="screen-etiquette" class="screen">
             <div class="header"><i class="fas fa-chevron-left back-btn" onclick="goBackAction()"></i><span class="sub-title">이용 에티켓 캠페인</span><div style="width:20px;"></div></div>
             <div class="content">

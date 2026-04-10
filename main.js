@@ -17,6 +17,52 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const inquiriesRef = ref(db, 'inquiries');
+const noticesRef = ref(db, 'notices');
+
+// 공지사항 실시간 수신 → 홈 최신 소식 + 공지사항 게시판 렌더링
+onValue(query(noticesRef, orderByChild('timestamp')), (snapshot) => {
+    const notices = [];
+    snapshot.forEach((child) => {
+        notices.push({ key: child.key, ...child.val() });
+    });
+    notices.reverse(); // 최신순
+
+    const homeList = document.getElementById('home-notice-list');
+    if (homeList) {
+        if (notices.length === 0) {
+            homeList.innerHTML = '<div class="notice-item" style="color:var(--text-light);">등록된 공지사항이 없습니다.</div>';
+        } else {
+            homeList.innerHTML = notices.slice(0, 3).map(n =>
+                `<div class="notice-item" onclick="openSubScreen('screen-notices')">
+                    <span class="notice-tag">공지</span>
+                    <span class="notice-text">${escapeHtml(n.title)}</span>
+                </div>`
+            ).join('');
+        }
+    }
+
+    const boardList = document.getElementById('notices-list');
+    if (boardList) {
+        if (notices.length === 0) {
+            boardList.innerHTML = '<p style="text-align:center; color:var(--text-light); padding:40px 0;">등록된 공지사항이 없습니다.</p>';
+        } else {
+            boardList.innerHTML = notices.map(n => `
+                <div style="background:#fff; border:1px solid rgba(78,52,46,0.08); border-radius:14px; padding:18px; margin-bottom:14px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                        <span class="notice-tag">공지</span>
+                        <span style="font-size:0.75rem; color:var(--text-light);">${escapeHtml(n.date || '')}</span>
+                    </div>
+                    <div style="font-weight:700; font-size:1rem; color:var(--primary-color); margin-bottom:8px;">${escapeHtml(n.title)}</div>
+                    <div style="font-size:0.9rem; color:var(--text-dark); line-height:1.6; white-space:pre-wrap;">${escapeHtml(n.content)}</div>
+                </div>
+            `).join('');
+        }
+    }
+});
+
+function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 
 // ======================================================
 // ✈️ Telegram Notification Configuration
