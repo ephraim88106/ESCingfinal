@@ -260,6 +260,7 @@ window.submitComplain = async function() {
     const detailVal = document.getElementById('complain-detail').value;
     const phoneVal = document.getElementById('complain-phone').value;
     if (!seatVal) { alert("좌석 번호 또는 구역을 입력해 주세요."); return; }
+    if (!phoneVal) { alert("답변을 받으실 연락처를 입력해 주세요."); return; }
     let category = "기타";
     if (typeVal.includes("[소음/매너]")) category = "소음";
     else if (typeVal.includes("[온도 조절]")) category = "온도";
