@@ -52,7 +52,7 @@
             --status-completed: #66BB6A;
         }
 
-        body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Noto Sans KR', sans-serif; font-weight: 300; color: var(--text-dark); }
+        body { background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Noto Sans KR', sans-serif; font-weight: 300; color: var(--text-dark); }
         .app-container { width: 375px; height: 667px; background-color: var(--bg-color); border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); overflow: hidden; position: relative; border: 1px solid rgba(0,0,0,0.05); }
 
         .screen { width: 100%; height: 100%; display: flex; flex-direction: column; background-color: var(--bg-color); position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; transform: translateX(20px); transition: all var(--transition-speed) var(--premium-easing); }
