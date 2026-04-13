@@ -156,9 +156,10 @@ function loadAdFit(container) {
     ins.setAttribute('data-ad-width', '320');
     ins.setAttribute('data-ad-height', '480');
     wrap.appendChild(ins);
+    // 캐시 우회를 위해 타임스탬프 쿼리 추가
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
+    script.src = '//t1.daumcdn.net/kas/static/ba.min.js?t=' + Date.now();
     script.async = true;
     wrap.appendChild(script);
 }
@@ -177,9 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (window.location.hash) { history.replaceState(null, '', window.location.pathname); }
-
-    // 지점 선택 화면 광고 로드 (첫 화면)
-    loadAdFit(document.getElementById('screen-branch'));
 });
 
 // ---- 전역 함수 정의 (window 객체에 할당) ----
