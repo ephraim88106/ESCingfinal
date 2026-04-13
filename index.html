@@ -67,8 +67,8 @@
         .brand-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary-color); font-weight: 600; display: flex; align-items: baseline; gap: 8px; }
         .sub-title { font-size: 1.1rem; font-weight: 500; color: var(--text-dark); }
         
-        .content { padding: 20px 25px 80px 25px; overflow-y: auto; flex-grow: 1; }
-        .ad-banner-bottom { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; z-index: 50; background: #f9f9f9; display: flex; justify-content: center; align-items: flex-start; border-top: 1px solid rgba(0,0,0,0.05); overflow: hidden; }
+        .content { padding: 20px 25px 30px 25px; overflow-y: auto; flex-grow: 1; }
+        .ad-banner-bottom { width: 375px; margin: 10px auto 0; display: flex; justify-content: center; }
         .content::-webkit-scrollbar { width: 0px; }
         
         .promo-banner-container { width: 100%; height: 70px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; position: relative; box-shadow: var(--shadow-light); }
@@ -205,10 +205,10 @@
 
         /* 챗봇 스타일 */
         .chatbot-fab {
-            position: absolute; bottom: 75px; right: 20px; width: 56px; height: 56px;
+            position: absolute; bottom: 25px; right: 20px; width: 56px; height: 56px;
             border-radius: 50%; background: var(--primary-color); color: white; border: none;
             font-size: 1.4rem; cursor: pointer; box-shadow: 0 4px 15px rgba(78,52,46,0.35);
-            z-index: 55; display: flex; align-items: center; justify-content: center;
+            z-index: 50; display: flex; align-items: center; justify-content: center;
             transition: all 0.3s var(--premium-easing);
         }
         .chatbot-fab:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(78,52,46,0.45); }
@@ -302,7 +302,7 @@
 
     <div class="app-container">
         <div id="screen-branch" class="screen active">
-            <div class="content" style="padding: 0; padding-bottom: 80px;">
+            <div class="content" style="padding: 0;">
                 <div class="intro-header">
                     <h1 class="intro-logo">EPHRAIM</h1>
                     <div class="intro-subtitle">PREMIUM STUDY CAFE</div>
@@ -771,14 +771,6 @@
             <div class="bottom-btn-wrap"><button class="premium-btn" id="btn-inquiry" onclick="submitForm('screen-inquiry', '기타', 'inquiry-cat', 'inquiry-detail', null, 'inquiry-phone')">문의글 남기기</button></div>
         </div>
 
-        <!-- 카카오 애드핏 하단 배너 -->
-        <div class="ad-banner-bottom">
-            <ins class="kakao_ad_area" style="display:none;"
-            data-ad-unit = "DAN-0GSwRrd8zk1vtgrr"
-            data-ad-width = "320"
-            data-ad-height = "480"></ins>
-        </div>
-
         <!-- 챗봇 FAB 버튼 -->
         <button class="chatbot-fab hidden" id="chatbot-fab" onclick="window.openChatbot()">
             <i class="fas fa-comment-dots"></i>
@@ -805,7 +797,13 @@
 
     </div>
 
-    <!-- 카카오 애드핏 스크립트 -->
+    <!-- 카카오 애드핏 하단 배너 -->
+    <div class="ad-banner-bottom">
+        <ins class="kakao_ad_area" style="display:none;"
+        data-ad-unit = "DAN-0GSwRrd8zk1vtgrr"
+        data-ad-width = "320"
+        data-ad-height = "480"></ins>
+    </div>
     <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
     <!-- ✅ Application Logic -->
