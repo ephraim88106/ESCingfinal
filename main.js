@@ -134,36 +134,6 @@ const branchPricingData = { '계양직영점': commonPricingArray, '박촌역점
 const branchRoomData = { '계양직영점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" }, { title: "스터디룸2 (6인)", desc: "1시간 10,000원", icon: "fas fa-users-cog" } ], '박촌역점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천상동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부천신중동점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], '부평삼산점': [ { title: "스터디룸1 (4인)", desc: "1시간 7,000원", icon: "fas fa-users" } ], 'default': [ { title: "안내", desc: "스터디룸 정보 준비 중", icon: "fas fa-info-circle" } ] };
 const branchWifiData = { '계양직영점': 'hello1234', '박촌역점': 'escbc0909', '부천상동점': 'escsd0909', '부천신중동점': 'escjd0909', '부평삼산점': 'escss0909', 'default': '안내 데스크 문의' };
 
-// ---- AdFit 광고 관리 ----
-const ADFIT_UNIT_ID = 'DAN-0GSwRrd8zk1vtgrr';
-
-function destroyAdFit() {
-    if (window.adfit) {
-        try { window.adfit.destroy(ADFIT_UNIT_ID); } catch(e) {}
-    }
-}
-
-function loadAdFit(container) {
-    if (!container) return;
-    const wrap = container.querySelector('.kakao-ad-wrap');
-    if (!wrap) return;
-    destroyAdFit();
-    wrap.innerHTML = '';
-    const ins = document.createElement('ins');
-    ins.className = 'kakao_ad_area';
-    ins.style.display = 'none';
-    ins.setAttribute('data-ad-unit', ADFIT_UNIT_ID);
-    ins.setAttribute('data-ad-width', '320');
-    ins.setAttribute('data-ad-height', '480');
-    wrap.appendChild(ins);
-    // 캐시 우회를 위해 타임스탬프 쿼리 추가
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '//t1.daumcdn.net/kas/static/ba.min.js?t=' + Date.now();
-    script.async = true;
-    wrap.appendChild(script);
-}
-
 // ---- 초기화 및 이벤트 리스너 ----
 document.addEventListener('DOMContentLoaded', () => {
     // 앞 페이지 프로모션 배너 자동 페이드 전환
@@ -184,12 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
 window.goToMain = function(branchName) {
     currentBranch = branchName;
     document.getElementById('display-branch').innerText = branchName;
-    destroyAdFit();
     document.getElementById('screen-branch').classList.remove('active');
-    setTimeout(() => {
-        document.getElementById('screen-main').classList.add('active');
-        loadAdFit(document.getElementById('screen-main'));
-    }, 100);
+    setTimeout(() => { document.getElementById('screen-main').classList.add('active'); }, 100);
     history.pushState({ page: 'main' }, '', '#main');
 };
 
@@ -251,18 +217,15 @@ window.openSubScreen = function(screenId) {
         }
     }
 
-    destroyAdFit();
     screen.classList.add('active');
     activeSubScreen = screenId;
     history.pushState({ page: 'sub', id: screenId }, '', '#' + screenId);
-    setTimeout(() => loadAdFit(screen), 200);
 };
 
 window.goBackAction = function() { history.back(); };
 
 window.addEventListener('popstate', function() {
     const hash = window.location.hash;
-    destroyAdFit();
     if (hash === '#main') {
         if (activeSubScreen !== "") {
             document.getElementById(activeSubScreen).querySelectorAll('input, textarea').forEach(input => input.value = '');
@@ -270,18 +233,11 @@ window.addEventListener('popstate', function() {
             activeSubScreen = "";
         }
         document.getElementById('screen-branch').classList.remove('active');
-        setTimeout(() => {
-            document.getElementById('screen-main').classList.add('active');
-            loadAdFit(document.getElementById('screen-main'));
-        }, 100);
+        setTimeout(() => { document.getElementById('screen-main').classList.add('active'); }, 100);
     } else if (hash === '' || hash === '#') {
         document.getElementById('screen-main').classList.remove('active');
         if (activeSubScreen !== "") { document.getElementById(activeSubScreen).classList.remove('active'); activeSubScreen = ""; }
-        setTimeout(() => {
-            document.getElementById('screen-branch').classList.add('active');
-            currentBranch = "";
-            loadAdFit(document.getElementById('screen-branch'));
-        }, 100);
+        setTimeout(() => { document.getElementById('screen-branch').classList.add('active'); currentBranch = ""; }, 100);
     }
 });
 
