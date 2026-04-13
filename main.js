@@ -220,6 +220,7 @@ window.openSubScreen = function(screenId) {
     screen.classList.add('active');
     activeSubScreen = screenId;
     history.pushState({ page: 'sub', id: screenId }, '', '#' + screenId);
+    setTimeout(() => reloadAdFit(screen), 200);
 };
 
 window.goBackAction = function() { history.back(); };
@@ -351,12 +352,30 @@ function hideChatbotFab() {
     chatbotInitialized = false;
 }
 
+// AdFit 광고 재로드 함수
+function reloadAdFit(container) {
+    if (!container) return;
+    const adElements = container.querySelectorAll('ins.kakao_ad_area');
+    adElements.forEach(ad => {
+        const parent = ad.parentNode;
+        const clone = ad.cloneNode(true);
+        parent.replaceChild(clone, ad);
+    });
+    // ba.min.js 스크립트를 다시 로드하여 새 ins 태그 인식
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//t1.daumcdn.net/kas/static/ba.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+}
+
 // 메인 화면 진입 시 FAB 표시, 나갈 때 숨김
 const origGoToMain = window.goToMain;
 window.goToMain = function(branchName) {
     origGoToMain(branchName);
     chatbotInitialized = false;
     setTimeout(showChatbotFab, 500);
+    setTimeout(() => reloadAdFit(document.getElementById('screen-main')), 200);
 };
 
 // 뒤로가기로 지점선택 화면 돌아갈 때 숨김
