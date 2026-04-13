@@ -52,7 +52,7 @@
             --status-completed: #66BB6A;
         }
 
-        body { background-color: var(--bg-color); display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Noto Sans KR', sans-serif; font-weight: 300; color: var(--text-dark); }
+        body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: 'Noto Sans KR', sans-serif; font-weight: 300; color: var(--text-dark); }
         .app-container { width: 375px; height: 667px; background-color: var(--bg-color); border-radius: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.12); overflow: hidden; position: relative; border: 1px solid rgba(0,0,0,0.05); }
 
         .screen { width: 100%; height: 100%; display: flex; flex-direction: column; background-color: var(--bg-color); position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; transform: translateX(20px); transition: all var(--transition-speed) var(--premium-easing); }
@@ -68,7 +68,6 @@
         .sub-title { font-size: 1.1rem; font-weight: 500; color: var(--text-dark); }
         
         .content { padding: 20px 25px 30px 25px; overflow-y: auto; flex-grow: 1; }
-        .ad-banner-bottom { width: 375px; margin: 10px auto 0; display: flex; justify-content: center; }
         .content::-webkit-scrollbar { width: 0px; }
         
         .promo-banner-container { width: 100%; height: 70px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; position: relative; box-shadow: var(--shadow-light); }
@@ -796,15 +795,6 @@
         </div>
 
     </div>
-
-    <!-- 카카오 애드핏 하단 배너 -->
-    <div class="ad-banner-bottom">
-        <ins class="kakao_ad_area" style="display:none;"
-        data-ad-unit = "DAN-0GSwRrd8zk1vtgrr"
-        data-ad-width = "320"
-        data-ad-height = "480"></ins>
-    </div>
-    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
 
     <!-- ✅ Application Logic -->
     <script type="module" src="main.js"></script>
