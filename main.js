@@ -67,8 +67,11 @@ function escapeHtml(s) {
 // ======================================================
 // ✈️ Telegram Notification Configuration
 // ======================================================
-const TELEGRAM_BOT_TOKEN = "8613163185:AAGBPtBj6m8Fuo3e_390gZ0GvVg3kDfOfgw";
-const TELEGRAM_CHAT_IDS = ["8478291658"];
+const TELEGRAM_TARGETS = [
+    { botToken: "8613163185:AAGBPtBj6m8Fuo3e_390gZ0GvVg3kDfOfgw", chatId: "8478291658" },
+    { botToken: "8227613945:AAGntDtJAN0GTo1_JX6vvE3yVCP-j8pG04s", chatId: "8789976868" },
+    { botToken: "8675992386:AAHrUbQEYNQTumuWVeoQ4e6CHT0nhptleEI", chatId: "8536069067" }
+];
 
 async function sendTelegramNotification(inquiry) {
     const message = `<b>🔔 [에브라임 - ${inquiry.category}] 새로운 문의 접수</b>\n\n` +
@@ -79,9 +82,9 @@ async function sendTelegramNotification(inquiry) {
                     `📝 <b>내용:</b> ${inquiry.content}\n` +
                     `⏰ <b>시간:</b> ${inquiry.time}`;
 
-    for (const chatId of TELEGRAM_CHAT_IDS) {
+    for (const { botToken, chatId } of TELEGRAM_TARGETS) {
         try {
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+            await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
